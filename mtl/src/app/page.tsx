@@ -1,26 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import promisesData from "@/data/promises.json";
-import contentEn from "@/data/content_en.json";
-import contentFr from "@/data/content_fr.json";
-
-type PromiseRecord = typeof promisesData[number];
-type Language = "en" | "fr";
-type ContentValue = string | { label: string; url: string };
-
-type SourceLink = { label: string; url: string };
-
-type FilterChipProps = {
-  label: string;
-  active: boolean;
-  onClick: () => void;
-};
-
-const CONTENT_BY_LANG: Record<Language, Record<string, ContentValue>> = {
-  en: contentEn as Record<string, ContentValue>,
-  fr: contentFr as Record<string, ContentValue>,
-};
+import { getText, Language } from "@/lib/content";
 
 const ALL_PARTIES = Array.from(new Set(promisesData.map((promise) => promise.party)));
 const ALL_CATEGORIES = Array.from(
@@ -30,29 +13,13 @@ const ALL_DEMOGRAPHICS = Array.from(
   new Set(promisesData.flatMap((promise) => promise.demographic))
 );
 
-function getText(key: string, language: Language): string {
-  const value = CONTENT_BY_LANG[language][key];
-  if (!value) {
-    return key;
-  }
+type PromiseRecord = typeof promisesData[number];
 
-  return typeof value === "string" ? value : value.label;
-}
-
-function getSource(key: string, language: Language): SourceLink {
-  const value = CONTENT_BY_LANG[language][key];
-
-  if (value && typeof value === "object" && "label" in value && "url" in value) {
-    return value as SourceLink;
-  }
-
-  const fallbackLabel = typeof value === "string" ? value : key;
-
-  return {
-    label: fallbackLabel,
-    url: "#",
-  };
-}
+type FilterChipProps = {
+  label: string;
+  active: boolean;
+  onClick: () => void;
+};
 
 function FilterChip({ label, active, onClick }: FilterChipProps) {
   return (
@@ -75,6 +42,8 @@ export default function Home() {
   const [selectedParty, setSelectedParty] = useState<string>(ALL_PARTIES[0] ?? "");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedDemographics, setSelectedDemographics] = useState<string[]>([]);
+  const [showAllCategories, setShowAllCategories] = useState(false);
+  const [showAllDemographics, setShowAllDemographics] = useState(false);
 
   const partyLabel = selectedParty ? getText(selectedParty, language) : "";
 
@@ -106,10 +75,54 @@ export default function Home() {
     });
   }, [selectedParty, selectedCategories, selectedDemographics]);
 
-  const categoriesForDisplay =
-    selectedCategories.length > 0 ? selectedCategories : ALL_CATEGORIES;
+  const categoryCounts = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const entry of filteredPromises) {
+      for (const category of entry.category) {
+        counts.set(category, (counts.get(category) ?? 0) + 1);
+      }
+    }
+    return counts;
+  }, [filteredPromises]);
 
-  const categorySections = categoriesForDisplay.map((categoryKey) => {
+  const sortedCategories = useMemo(() => {
+    const sorted = [...ALL_CATEGORIES].sort((a, b) => {
+      const countA = categoryCounts.get(a) ?? 0;
+      const countB = categoryCounts.get(b) ?? 0;
+
+      if (countA === countB) {
+        return a.localeCompare(b);
+      }
+
+      return countB - countA;
+    });
+
+    return sorted;
+  }, [categoryCounts]);
+
+  const totalCategoryCount = sortedCategories.length;
+  const totalDemographicCount = ALL_DEMOGRAPHICS.length;
+
+  const categoryChipOptions = useMemo(() => {
+    const base = showAllCategories ? sortedCategories : sortedCategories.slice(0, 5);
+    if (selectedCategories.length === 0) {
+      return base;
+    }
+
+    const seen = new Set(base);
+    const extras = selectedCategories.filter((category) => !seen.has(category));
+    return [...extras, ...base];
+  }, [showAllCategories, sortedCategories, selectedCategories]);
+
+  const categorySectionOrder = useMemo(() => {
+    if (selectedCategories.length > 0) {
+      return selectedCategories;
+    }
+
+    return sortedCategories;
+  }, [selectedCategories, sortedCategories]);
+
+  const categorySections = categorySectionOrder.map((categoryKey) => {
     const promisesForCategory = filteredPromises.filter((promise) =>
       promise.category.includes(categoryKey)
     );
@@ -124,6 +137,40 @@ export default function Home() {
       detailCount,
     };
   });
+
+  const promisesSelectedSet = useMemo(() => {
+    const ids = new Set<string>();
+    if (selectedCategories.length > 0) {
+      filteredPromises.forEach((promise) => {
+        if (promise.category.some((category) => selectedCategories.includes(category))) {
+          ids.add(promise.id);
+        }
+      });
+    } else {
+      filteredPromises.forEach((promise) => {
+        ids.add(promise.id);
+      });
+    }
+    return ids;
+  }, [filteredPromises, selectedCategories]);
+  const totalPromisesSelected = promisesSelectedSet.size;
+
+  const selectedCategoryCount = selectedCategories.length > 0 ? selectedCategories.length : totalCategoryCount;
+  const selectedDemographicCount = selectedDemographics.length > 0 ? selectedDemographics.length : totalDemographicCount;
+
+  const demographicBaseOptions = useMemo(() => {
+    const base = showAllDemographics
+      ? ALL_DEMOGRAPHICS
+      : ALL_DEMOGRAPHICS.slice(0, 5);
+
+    return base;
+  }, [showAllDemographics]);
+
+  const demographicChipOptions = useMemo(() => {
+    const seen = new Set(demographicBaseOptions);
+    const extras = selectedDemographics.filter((demographic) => !seen.has(demographic));
+    return [...extras, ...demographicBaseOptions];
+  }, [demographicBaseOptions, selectedDemographics]);
 
   const toggleCategory = (value: string) => {
     setSelectedCategories((previous) =>
@@ -151,18 +198,15 @@ export default function Home() {
       <header className="flex flex-col gap-6">
         <div className="flex items-start justify-between">
           <div className="space-y-1">
-            <p className="text-xs uppercase tracking-[0.35em] text-[#636363]">
+            <p className="text-base font-semibold text-[#4f4f4f]">
               Election Day: November 1st
             </p>
-            <h1 className="text-3xl font-semibold text-[#111111]">
-              {partyLabel || "Montreal Platforms"}
-            </h1>
           </div>
-          <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-[#636363]">
+          <div className="flex items-center gap-2 text-base font-semibold text-[#4a4a4a]">
             <button
               type="button"
               onClick={() => setLanguage("fr")}
-              className={`rounded px-2 py-1 transition-colors ${
+              className={`rounded px-3 py-1 transition-colors ${
                 language === "fr" ? "bg-[#111111] text-[#f5f5f5]" : "hover:bg-[#e1e1e1]"
               }`}
             >
@@ -171,7 +215,7 @@ export default function Home() {
             <button
               type="button"
               onClick={() => setLanguage("en")}
-              className={`rounded px-2 py-1 transition-colors ${
+              className={`rounded px-3 py-1 transition-colors ${
                 language === "en" ? "bg-[#111111] text-[#f5f5f5]" : "hover:bg-[#e1e1e1]"
               }`}
             >
@@ -182,7 +226,7 @@ export default function Home() {
 
         <div className="space-y-6">
           <div className="flex flex-wrap items-center gap-3">
-            <span className="text-xs uppercase tracking-[0.3em] text-[#8a8a8a]">Parties</span>
+            <span className="text-base font-semibold text-[#3f3f3f]">Parties</span>
             <div className="flex flex-wrap items-center gap-2">
               {ALL_PARTIES.map((party) => (
                 <FilterChip
@@ -196,11 +240,11 @@ export default function Home() {
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
-            <span className="text-xs uppercase tracking-[0.3em] text-[#8a8a8a]">
-              Categories
+            <span className="text-base font-semibold text-[#3f3f3f]">
+              Categories ({selectedCategoryCount}/{totalCategoryCount})
             </span>
             <div className="flex flex-wrap items-center gap-2">
-              {ALL_CATEGORIES.map((category) => (
+              {categoryChipOptions.map((category) => (
                 <FilterChip
                   key={category}
                   label={getText(category, language)}
@@ -209,15 +253,21 @@ export default function Home() {
                 />
               ))}
             </div>
-            <span className="text-xs text-[#8a8a8a]">… see all</span>
+            <button
+              type="button"
+              onClick={() => setShowAllCategories((previous) => !previous)}
+              className="text-base text-[#6b6b6b] underline underline-offset-4 hover:text-[#111111]"
+            >
+              {showAllCategories ? "hide" : "… see all"}
+            </button>
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
-            <span className="text-xs uppercase tracking-[0.3em] text-[#8a8a8a]">
-              People
+            <span className="text-base font-semibold text-[#3f3f3f]">
+              People ({selectedDemographicCount}/{totalDemographicCount})
             </span>
             <div className="flex flex-wrap items-center gap-2">
-              {ALL_DEMOGRAPHICS.map((demographic) => (
+              {demographicChipOptions.map((demographic) => (
                 <FilterChip
                   key={demographic}
                   label={getText(demographic, language)}
@@ -226,8 +276,21 @@ export default function Home() {
                 />
               ))}
             </div>
-            <span className="text-xs text-[#8a8a8a]">… see all</span>
+            <button
+              type="button"
+              onClick={() => setShowAllDemographics((previous) => !previous)}
+              className="text-base text-[#6b6b6b] underline underline-offset-4 hover:text-[#111111]"
+            >
+              {showAllDemographics ? "hide" : "… see all"}
+            </button>
           </div>
+        </div>
+
+        <div className="flex flex-wrap items-baseline justify-between gap-3 border-t border-[#dcdcdc] pt-4">
+          <h1 className="text-3xl font-semibold text-[#111111]">{partyLabel || "Montreal Platforms"}</h1>
+          <span className="text-base text-[#4f4f4f]">
+            {totalPromisesSelected === 1 ? "1 promise" : `${totalPromisesSelected} promises`}
+          </span>
         </div>
       </header>
 
@@ -243,7 +306,7 @@ export default function Home() {
               </div>
 
               {promises.length === 0 ? (
-                <p className="text-sm text-[#9b9b9b]">{emptyMessage}</p>
+                <p className="text-base text-[#9b9b9b]">{emptyMessage}</p>
               ) : (
                 <div className="space-y-6 border-l border-[#d0d0d0] pl-4">
                   {promises.map((promise) => {
@@ -252,32 +315,18 @@ export default function Home() {
 
                     return (
                       <article key={`${categoryKey}-${promise.id}`} className="space-y-3">
-                        <p className="text-xs uppercase tracking-[0.25em] text-[#747474]">
+                        <Link
+                          href={`/promise/${promise.id}`}
+                          className="inline-flex items-center gap-2 text-sm font-semibold text-[#0f62fe] underline underline-offset-4 hover:text-[#083b9b]"
+                        >
                           {title}
-                        </p>
+                          <span aria-hidden>↗</span>
+                        </Link>
                         <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed">
                           {promise.details.map((detailKey) => (
                             <li key={detailKey}>{getText(detailKey, language)}</li>
                           ))}
                         </ul>
-                        {promise.sources.length > 0 && (
-                          <div className="flex flex-wrap gap-3 text-xs text-[#6e6e6e]">
-                            {promise.sources.map((sourceKey) => {
-                              const source = getSource(sourceKey, language);
-                              return (
-                                <a
-                                  key={sourceKey}
-                                  href={source.url}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  className="underline decoration-dotted underline-offset-4 hover:text-[#111111]"
-                                >
-                                  {source.label}
-                                </a>
-                              );
-                            })}
-                          </div>
-                        )}
                       </article>
                     );
                   })}
