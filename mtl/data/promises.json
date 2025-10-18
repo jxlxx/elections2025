@@ -1,0 +1,954 @@
+[
+  {
+    "id": "pm_rmm_replacement_non_market_quota",
+    "party": "projet_montreal",
+    "demographic": [
+      "renters",
+      "low_income",
+      "families"
+    ],
+    "land": [
+      "citywide",
+      "strategic_zones"
+    ],
+    "category": [
+      "housing",
+      "regulation",
+      "planning"
+    ],
+    "sources": [
+      "source__projet_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__pm_rmm_replacement_non_market_quota__detail_1",
+      "promise__pm_rmm_replacement_non_market_quota__detail_2"
+    ]
+  },
+  {
+    "id": "pm_ready_to_build_zones",
+    "party": "projet_montreal",
+    "demographic": [
+      "renters",
+      "families",
+      "housing_providers"
+    ],
+    "land": [
+      "citywide"
+    ],
+    "category": [
+      "housing",
+      "planning",
+      "permitting"
+    ],
+    "sources": [
+      "source__projet_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__pm_ready_to_build_zones__detail_1",
+      "promise__pm_ready_to_build_zones__detail_2"
+    ]
+  },
+  {
+    "id": "pm_non_market_housing_guarantee_fund",
+    "party": "projet_montreal",
+    "demographic": [
+      "low_income",
+      "community_housing_partners"
+    ],
+    "land": [
+      "citywide"
+    ],
+    "category": [
+      "housing",
+      "finance"
+    ],
+    "sources": [
+      "source__projet_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__pm_non_market_housing_guarantee_fund__detail_1"
+    ]
+  },
+  {
+    "id": "pm_limit_airbnb_summer",
+    "party": "projet_montreal",
+    "demographic": [
+      "renters",
+      "neighbourhood_residents"
+    ],
+    "land": [
+      "citywide",
+      "tourist_hotspots"
+    ],
+    "category": [
+      "housing",
+      "regulation",
+      "short_term_rental"
+    ],
+    "sources": [
+      "source__projet_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__pm_limit_airbnb_summer__detail_1"
+    ]
+  },
+  {
+    "id": "pm_vacant_unit_tax",
+    "party": "projet_montreal",
+    "demographic": [
+      "renters",
+      "families",
+      "low_income"
+    ],
+    "land": [
+      "citywide"
+    ],
+    "category": [
+      "housing",
+      "taxation"
+    ],
+    "sources": [
+      "source__projet_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__pm_vacant_unit_tax__detail_1"
+    ]
+  },
+  {
+    "id": "pm_eviction_support_program",
+    "party": "projet_montreal",
+    "demographic": [
+      "renters",
+      "low_income",
+      "community_organizations"
+    ],
+    "land": [
+      "citywide"
+    ],
+    "category": [
+      "housing",
+      "tenant_support",
+      "social_services"
+    ],
+    "sources": [
+      "source__projet_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__pm_eviction_support_program__detail_1"
+    ]
+  },
+  {
+    "id": "pm_modular_units_500",
+    "party": "projet_montreal",
+    "demographic": [
+      "unhoused",
+      "community_organizations"
+    ],
+    "land": [
+      "citywide"
+    ],
+    "category": [
+      "homelessness",
+      "housing",
+      "social_services"
+    ],
+    "sources": [
+      "source__projet_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__pm_modular_units_500__detail_1"
+    ]
+  },
+  {
+    "id": "pm_transitional_housing_500",
+    "party": "projet_montreal",
+    "demographic": [
+      "unhoused",
+      "community_organizations"
+    ],
+    "land": [
+      "citywide"
+    ],
+    "category": [
+      "homelessness",
+      "housing",
+      "social_services"
+    ],
+    "sources": [
+      "source__projet_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__pm_transitional_housing_500__detail_1"
+    ]
+  },
+  {
+    "id": "pm_double_bixi_network",
+    "party": "projet_montreal",
+    "demographic": [
+      "cyclists",
+      "commuters",
+      "students"
+    ],
+    "land": [
+      "citywide",
+      "under_served_quarters"
+    ],
+    "category": [
+      "transportation",
+      "active_mobility"
+    ],
+    "sources": [
+      "source__projet_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__pm_double_bixi_network__detail_1"
+    ]
+  },
+  {
+    "id": "pm_public_toilet_network",
+    "party": "projet_montreal",
+    "demographic": [
+      "families",
+      "senior_citizens",
+      "unhoused",
+      "tourists"
+    ],
+    "land": [
+      "citywide"
+    ],
+    "category": [
+      "public_space",
+      "public_health"
+    ],
+    "sources": [
+      "source__projet_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__pm_public_toilet_network__detail_1"
+    ]
+  },
+  {
+    "id": "pm_secure_school_zones_2030",
+    "party": "projet_montreal",
+    "demographic": [
+      "students",
+      "families",
+      "pedestrians"
+    ],
+    "land": [
+      "citywide"
+    ],
+    "category": [
+      "public_safety",
+      "transportation",
+      "active_mobility"
+    ],
+    "sources": [
+      "source__projet_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__pm_secure_school_zones_2030__detail_1"
+    ]
+  },
+  {
+    "id": "pm_tramway_three_lines",
+    "party": "projet_montreal",
+    "demographic": [
+      "commuters",
+      "students",
+      "workers"
+    ],
+    "land": [
+      "east_end",
+      "grand_sud_ouest",
+      "central_core"
+    ],
+    "category": [
+      "transportation",
+      "public_transit",
+      "infrastructure"
+    ],
+    "sources": [
+      "source__projet_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__pm_tramway_three_lines__detail_1"
+    ]
+  },
+  {
+    "id": "pm_surface_bus_network",
+    "party": "projet_montreal",
+    "demographic": [
+      "commuters",
+      "shift_workers",
+      "students"
+    ],
+    "land": [
+      "citywide",
+      "key_corridors"
+    ],
+    "category": [
+      "transportation",
+      "public_transit"
+    ],
+    "sources": [
+      "source__projet_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__pm_surface_bus_network__detail_1"
+    ]
+  },
+  {
+    "id": "pm_increase_metro_frequency",
+    "party": "projet_montreal",
+    "demographic": [
+      "commuters",
+      "students",
+      "workers"
+    ],
+    "land": [
+      "citywide"
+    ],
+    "category": [
+      "transportation",
+      "public_transit",
+      "service_delivery"
+    ],
+    "sources": [
+      "source__projet_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__pm_increase_metro_frequency__detail_1"
+    ]
+  },
+  {
+    "id": "tm_divest_from_genocide",
+    "party": "transition_montreal",
+    "demographic": [
+      "taxpayers",
+      "residents",
+      "human_rights_advocates"
+    ],
+    "land": [
+      "citywide"
+    ],
+    "category": [
+      "finance",
+      "human_rights",
+      "governance"
+    ],
+    "sources": [
+      "source__transition_divesting_from_genocide"
+    ],
+    "details": [
+      "promise__tm_divest_from_genocide__detail_1",
+      "promise__tm_divest_from_genocide__detail_2"
+    ]
+  },
+  {
+    "id": "tm_ambitious_mass_transit",
+    "party": "transition_montreal",
+    "demographic": [
+      "commuters",
+      "students",
+      "workers"
+    ],
+    "land": [
+      "east_end",
+      "north_end",
+      "central_core"
+    ],
+    "category": [
+      "transportation",
+      "public_transit",
+      "infrastructure"
+    ],
+    "sources": [
+      "source__transition_ambitious_mass_transit"
+    ],
+    "details": [
+      "promise__tm_ambitious_mass_transit__detail_1",
+      "promise__tm_ambitious_mass_transit__detail_2",
+      "promise__tm_ambitious_mass_transit__detail_3"
+    ]
+  },
+  {
+    "id": "tm_electoral_reform",
+    "party": "transition_montreal",
+    "demographic": [
+      "voters",
+      "residents"
+    ],
+    "land": [
+      "citywide"
+    ],
+    "category": [
+      "governance",
+      "democracy"
+    ],
+    "sources": [
+      "source__transition_electoral_reform"
+    ],
+    "details": [
+      "promise__tm_electoral_reform__detail_1",
+      "promise__tm_electoral_reform__detail_2"
+    ]
+  },
+  {
+    "id": "tm_public_safety_dignity",
+    "party": "transition_montreal",
+    "demographic": [
+      "residents",
+      "marginalized_residents"
+    ],
+    "land": [
+      "citywide"
+    ],
+    "category": [
+      "public_safety",
+      "social_services",
+      "governance"
+    ],
+    "sources": [
+      "source__transition_public_safety_dignity"
+    ],
+    "details": [
+      "promise__tm_public_safety_dignity__detail_1",
+      "promise__tm_public_safety_dignity__detail_2",
+      "promise__tm_public_safety_dignity__detail_3"
+    ]
+  },
+  {
+    "id": "tm_safe_school_routes",
+    "party": "transition_montreal",
+    "demographic": [
+      "students",
+      "families",
+      "school_staff"
+    ],
+    "land": [
+      "citywide",
+      "school_corridors"
+    ],
+    "category": [
+      "public_safety",
+      "transportation",
+      "active_mobility"
+    ],
+    "sources": [
+      "source__transition_safe_school_routes"
+    ],
+    "details": [
+      "promise__tm_safe_school_routes__detail_1",
+      "promise__tm_safe_school_routes__detail_2"
+    ]
+  },
+  {
+    "id": "tm_nightlife_protection",
+    "party": "transition_montreal",
+    "demographic": [
+      "nightlife_workers",
+      "artists",
+      "cultural_workers",
+      "neighbourhood_residents"
+    ],
+    "land": [
+      "nightlife_districts",
+      "downtown"
+    ],
+    "category": [
+      "culture",
+      "governance",
+      "economic_development"
+    ],
+    "sources": [
+      "source__transition_nightlife_protection"
+    ],
+    "details": [
+      "promise__tm_nightlife_protection__detail_1",
+      "promise__tm_nightlife_protection__detail_2",
+      "promise__tm_nightlife_protection__detail_3"
+    ]
+  },
+  {
+    "id": "tm_public_food_market",
+    "party": "transition_montreal",
+    "demographic": [
+      "families",
+      "low_income",
+      "food_security_advocates"
+    ],
+    "land": [
+      "food_deserts"
+    ],
+    "category": [
+      "food_security",
+      "economic_development",
+      "public_space"
+    ],
+    "sources": [
+      "source__transition_public_food_market"
+    ],
+    "details": [
+      "promise__tm_public_food_market__detail_1"
+    ]
+  },
+  {
+    "id": "tm_social_pricing_transit",
+    "party": "transition_montreal",
+    "demographic": [
+      "low_income",
+      "transit_dependant",
+      "students"
+    ],
+    "land": [
+      "citywide"
+    ],
+    "category": [
+      "transportation",
+      "public_transit",
+      "finance"
+    ],
+    "sources": [
+      "source__transition_social_pricing_transit"
+    ],
+    "details": [
+      "promise__tm_social_pricing_transit__detail_1",
+      "promise__tm_social_pricing_transit__detail_2"
+    ]
+  },
+  {
+    "id": "tm_infra_montreal_taskforce",
+    "party": "transition_montreal",
+    "demographic": [
+      "public_servants",
+      "residents",
+      "workers"
+    ],
+    "land": [
+      "citywide"
+    ],
+    "category": [
+      "infrastructure",
+      "governance",
+      "service_delivery"
+    ],
+    "sources": [
+      "source__transition_infra_montreal_taskforce"
+    ],
+    "details": [
+      "promise__tm_infra_montreal_taskforce__detail_1",
+      "promise__tm_infra_montreal_taskforce__detail_2"
+    ]
+  },
+  {
+    "id": "tm_ultra_wealthy_tax",
+    "party": "transition_montreal",
+    "demographic": [
+      "taxpayers",
+      "residents"
+    ],
+    "land": [
+      "citywide"
+    ],
+    "category": [
+      "taxation",
+      "finance",
+      "housing"
+    ],
+    "sources": [
+      "source__transition_ultra_wealthy_tax"
+    ],
+    "details": [
+      "promise__tm_ultra_wealthy_tax__detail_1",
+      "promise__tm_ultra_wealthy_tax__detail_2"
+    ]
+  },
+  {
+    "id": "em_replace_rmm_with_incentives",
+    "party": "ensemble_montreal",
+    "demographic": [
+      "renters",
+      "housing_providers",
+      "private_builders"
+    ],
+    "land": [
+      "citywide"
+    ],
+    "category": [
+      "housing",
+      "regulation",
+      "finance"
+    ],
+    "sources": [
+      "source__ensemble_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__em_replace_rmm_with_incentives__detail_1",
+      "promise__em_replace_rmm_with_incentives__detail_2"
+    ]
+  },
+  {
+    "id": "em_table_des_maires",
+    "party": "ensemble_montreal",
+    "demographic": [
+      "residents",
+      "public_servants"
+    ],
+    "land": [
+      "citywide"
+    ],
+    "category": [
+      "governance",
+      "service_delivery"
+    ],
+    "sources": [
+      "source__ensemble_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__em_table_des_maires__detail_1"
+    ]
+  },
+  {
+    "id": "em_inventory_municipal_assets",
+    "party": "ensemble_montreal",
+    "demographic": [
+      "housing_providers",
+      "private_builders",
+      "residents"
+    ],
+    "land": [
+      "citywide",
+      "municipal_properties"
+    ],
+    "category": [
+      "housing",
+      "planning",
+      "governance"
+    ],
+    "sources": [
+      "source__ensemble_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__em_inventory_municipal_assets__detail_1",
+      "promise__em_inventory_municipal_assets__detail_2"
+    ]
+  },
+  {
+    "id": "em_homelessness_response",
+    "party": "ensemble_montreal",
+    "demographic": [
+      "unhoused",
+      "community_organizations",
+      "residents"
+    ],
+    "land": [
+      "citywide"
+    ],
+    "category": [
+      "homelessness",
+      "social_services",
+      "public_safety"
+    ],
+    "sources": [
+      "source__ensemble_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__em_homelessness_response__detail_1",
+      "promise__em_homelessness_response__detail_2"
+    ]
+  },
+  {
+    "id": "em_neighbourhood_safety_vigies",
+    "party": "ensemble_montreal",
+    "demographic": [
+      "residents",
+      "small_businesses"
+    ],
+    "land": [
+      "citywide",
+      "priority_neighbourhoods"
+    ],
+    "category": [
+      "public_safety",
+      "service_delivery"
+    ],
+    "sources": [
+      "source__ensemble_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__em_neighbourhood_safety_vigies__detail_1"
+    ]
+  },
+  {
+    "id": "em_municipal_optimization_ai",
+    "party": "ensemble_montreal",
+    "demographic": [
+      "residents",
+      "public_servants",
+      "taxpayers"
+    ],
+    "land": [
+      "citywide"
+    ],
+    "category": [
+      "governance",
+      "service_delivery",
+      "technology"
+    ],
+    "sources": [
+      "source__ensemble_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__em_municipal_optimization_ai__detail_1",
+      "promise__em_municipal_optimization_ai__detail_2"
+    ]
+  },
+  {
+    "id": "em_relance_metropole_culturelle",
+    "party": "ensemble_montreal",
+    "demographic": [
+      "cultural_workers",
+      "artists",
+      "tourists"
+    ],
+    "land": [
+      "downtown",
+      "citywide"
+    ],
+    "category": [
+      "culture",
+      "economic_development"
+    ],
+    "sources": [
+      "source__ensemble_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__em_relance_metropole_culturelle__detail_1"
+    ]
+  },
+  {
+    "id": "em_international_outreach_plan",
+    "party": "ensemble_montreal",
+    "demographic": [
+      "residents",
+      "business_community",
+      "tourists"
+    ],
+    "land": [
+      "citywide"
+    ],
+    "category": [
+      "international_relations",
+      "economic_development"
+    ],
+    "sources": [
+      "source__ensemble_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__em_international_outreach_plan__detail_1"
+    ]
+  },
+  {
+    "id": "em_affordability_fund_land_equity",
+    "party": "ensemble_montreal",
+    "demographic": [
+      "renters",
+      "community_housing_partners",
+      "low_income"
+    ],
+    "land": [
+      "citywide",
+      "strategic_zones"
+    ],
+    "category": [
+      "housing",
+      "finance",
+      "planning"
+    ],
+    "sources": [
+      "source__ensemble_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__em_affordability_fund_land_equity__detail_1",
+      "promise__em_affordability_fund_land_equity__detail_2",
+      "promise__em_affordability_fund_land_equity__detail_3"
+    ]
+  },
+  {
+    "id": "em_homeownership_support",
+    "party": "ensemble_montreal",
+    "demographic": [
+      "families",
+      "low_income",
+      "senior_citizens",
+      "first_time_buyers"
+    ],
+    "land": [
+      "citywide"
+    ],
+    "category": [
+      "housing",
+      "finance",
+      "taxation"
+    ],
+    "sources": [
+      "source__ensemble_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__em_homeownership_support__detail_1",
+      "promise__em_homeownership_support__detail_2",
+      "promise__em_homeownership_support__detail_3",
+      "promise__em_homeownership_support__detail_4"
+    ]
+  },
+  {
+    "id": "em_accelerate_strategic_sites",
+    "party": "ensemble_montreal",
+    "demographic": [
+      "renters",
+      "families",
+      "private_builders"
+    ],
+    "land": [
+      "strategic_sites"
+    ],
+    "category": [
+      "housing",
+      "planning",
+      "infrastructure"
+    ],
+    "sources": [
+      "source__ensemble_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__em_accelerate_strategic_sites__detail_1"
+    ]
+  },
+  {
+    "id": "em_emphyteutic_leases",
+    "party": "ensemble_montreal",
+    "demographic": [
+      "community_housing_partners",
+      "housing_providers",
+      "renters"
+    ],
+    "land": [
+      "citywide",
+      "municipal_properties"
+    ],
+    "category": [
+      "housing",
+      "finance",
+      "planning"
+    ],
+    "sources": [
+      "source__ensemble_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__em_emphyteutic_leases__detail_1",
+      "promise__em_emphyteutic_leases__detail_2"
+    ]
+  },
+  {
+    "id": "em_permit_service_standards",
+    "party": "ensemble_montreal",
+    "demographic": [
+      "housing_providers",
+      "private_builders",
+      "community_housing_partners"
+    ],
+    "land": [
+      "citywide"
+    ],
+    "category": [
+      "housing",
+      "permitting",
+      "service_delivery",
+      "technology"
+    ],
+    "sources": [
+      "source__ensemble_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__em_permit_service_standards__detail_1",
+      "promise__em_permit_service_standards__detail_2",
+      "promise__em_permit_service_standards__detail_3"
+    ]
+  },
+  {
+    "id": "em_regulate_short_term_rentals",
+    "party": "ensemble_montreal",
+    "demographic": [
+      "renters",
+      "neighbourhood_residents",
+      "small_businesses"
+    ],
+    "land": [
+      "citywide",
+      "tourist_hotspots"
+    ],
+    "category": [
+      "housing",
+      "regulation",
+      "short_term_rental"
+    ],
+    "sources": [
+      "source__ensemble_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__em_regulate_short_term_rentals__detail_1",
+      "promise__em_regulate_short_term_rentals__detail_2",
+      "promise__em_regulate_short_term_rentals__detail_3"
+    ]
+  },
+  {
+    "id": "em_enforce_housing_quality",
+    "party": "ensemble_montreal",
+    "demographic": [
+      "renters",
+      "low_income",
+      "community_organizations"
+    ],
+    "land": [
+      "citywide"
+    ],
+    "category": [
+      "housing",
+      "tenant_support",
+      "social_services"
+    ],
+    "sources": [
+      "source__ensemble_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__em_enforce_housing_quality__detail_1",
+      "promise__em_enforce_housing_quality__detail_2"
+    ]
+  },
+  {
+    "id": "em_infrastructure_safety_audit",
+    "party": "ensemble_montreal",
+    "demographic": [
+      "residents",
+      "cyclists",
+      "drivers"
+    ],
+    "land": [
+      "citywide",
+      "key_corridors"
+    ],
+    "category": [
+      "infrastructure",
+      "transportation",
+      "public_safety"
+    ],
+    "sources": [
+      "source__ensemble_montreal_platform_2025"
+    ],
+    "details": [
+      "promise__em_infrastructure_safety_audit__detail_1",
+      "promise__em_infrastructure_safety_audit__detail_2"
+    ]
+  }
+]
