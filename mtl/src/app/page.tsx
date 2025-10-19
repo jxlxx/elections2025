@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { NavBar } from "@/components/NavBar";
 import promisesData from "@/data/promises.json";
 import { getText, Language } from "@/lib/content";
 
@@ -209,51 +210,7 @@ export default function Home() {
   return (
     <div className="min-h-screen  text-[#111111]">
       <div className="mx-auto flex max-w-5xl flex-col gap-8 px-6 py-12 sm:px-10">
-        <header className="flex flex-col gap-6">
-          <div className="flex items-start justify-between">
-            <p className="text-xl font-semibold uppercase text-[#3f3f3f]">
-            </p>
-            <div className="flex items-center gap-1 text-lg font-semibold uppercase">
-              <button
-                type="button"
-                onClick={() => setLanguage("fr")}
-                className={`transition-colors ${
-                  language === "fr" ? "text-[#111111]" : "text-[#7a7a7a] hover:text-[#111111]"
-                }`}
-              >
-                FR
-              </button>
-              <span>|</span>
-              <button
-                type="button"
-                onClick={() => setLanguage("en")}
-                className={`transition-colors ${
-                  language === "en" ? "text-[#111111]" : "text-[#7a7a7a] hover:text-[#111111]"
-                }`}
-              >
-                EN
-              </button>
-            </div>
-          </div>
-
-          <nav className="flex items-center  gap-1 text-lg font-semibold uppercase">
-            <a className="hover:text-[#111111]" href="#">
-              platforms
-            </a>
-              <span>|</span>
-            <a className="hover:text-[#111111]" href="#">
-              Map
-            </a>
-              <span>|</span>
-            <a className="hover:text-[#111111]" href="#">
-              Candidates
-            </a>
-              <span>|</span>
-            <a className="hover:text-[#111111]" href="#">
-              Quiz
-            </a>
-          </nav>
-        </header>
+        <NavBar language={language} onLanguageChange={setLanguage} />
 
         <section className="space-y-4">
           <div className="flex items-center gap-6 border-b border-[#111111]">
