@@ -13,6 +13,7 @@ export type DistrictFeature = Feature<Geometry, DistrictProperties>;
 export type SelectedDistrict = {
   id: number;
   name: string | null;
+  slug: string;
 };
 
 export const MONTREAL_MUNICIPALITY_ID = 66023;
@@ -38,9 +39,36 @@ export function formatDistrictName(properties?: DistrictProperties | null): stri
   return arrondissement ?? nom ?? null;
 }
 
+function slugify(value: string): string {
+  const normalized = value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  return normalized.length > 0 ? normalized : "district";
+}
+
+export function getDistrictSlug(properties?: DistrictProperties | null, fallbackId?: number): string {
+  if (!properties) {
+    return fallbackId !== undefined ? `district-${fallbackId}` : "district";
+  }
+
+  const parts = [properties.arrondissement, properties.nom]
+    .map((value) => (typeof value === "string" ? value.trim() : ""))
+    .filter(Boolean);
+
+  if (parts.length === 0) {
+    return fallbackId !== undefined ? `district-${fallbackId}` : "district";
+  }
+
+  return slugify(parts.join("-"));
+}
+
 export function toSelectedDistrict(feature: DistrictFeature | undefined): SelectedDistrict {
   if (!feature) {
-    return { id: -1, name: null };
+    return { id: -1, name: null, slug: "district" };
   }
 
   const idValue = typeof feature.properties?.id === "number" ? feature.properties.id : -1;
@@ -48,5 +76,23 @@ export function toSelectedDistrict(feature: DistrictFeature | undefined): Select
   return {
     id: idValue,
     name: formatDistrictName(feature.properties),
+    slug: getDistrictSlug(feature.properties, idValue),
   };
+}
+
+export function findDistrictBySlug(
+  collection: FeatureCollection<Geometry, DistrictProperties>,
+  slug: string
+): DistrictFeature | undefined {
+  const normalized = slug.trim().toLowerCase();
+  return filterMontrealDistricts(collection).find((feature) => {
+    const featureSlug = getDistrictSlug(feature.properties, feature.properties?.id as number | undefined);
+    return featureSlug === normalized;
+  });
+}
+
+export function getAllDistrictSelections(
+  collection: FeatureCollection<Geometry, DistrictProperties>
+): SelectedDistrict[] {
+  return filterMontrealDistricts(collection).map((feature) => toSelectedDistrict(feature));
 }

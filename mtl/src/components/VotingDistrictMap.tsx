@@ -10,6 +10,7 @@ import electoralDistricts from "@/data/districts-electoraux-2021.json" assert { 
 import {
   filterMontrealDistricts,
   formatDistrictName,
+  getDistrictSlug,
   type DistrictFeature,
   type DistrictProperties,
   type SelectedDistrict,
@@ -116,6 +117,7 @@ export function VotingDistrictMap({ selected, onDistrictSelect }: VotingDistrict
   const onEachFeature = (feature: DistrictFeature, layer: Layer) => {
     const districtId = typeof feature.properties?.id === "number" ? feature.properties.id : null;
     const label = formatDistrictName(feature.properties);
+    const slug = getDistrictSlug(feature.properties, districtId ?? undefined);
     const pathLayer = layer as Path;
 
     if (districtId !== null) {
@@ -141,7 +143,7 @@ export function VotingDistrictMap({ selected, onDistrictSelect }: VotingDistrict
             applyStyleForLayer(storedId, storedLayer, false, selectedIdRef.current);
           });
           applyStyleForLayer(districtId, pathLayer, false, selectedIdRef.current);
-          onDistrictSelect?.({ id: districtId, name: label });
+          onDistrictSelect?.({ id: districtId, name: label, slug });
         }
       },
     });
