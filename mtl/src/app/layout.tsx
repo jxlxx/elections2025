@@ -21,7 +21,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${firaCode.variable} bg-[#f5f5f5] text-[#111111] antialiased`}>{children}</body>
+      <body
+        className={`${firaCode.variable} bg-[#f5f5f5] text-[#111111] antialiased min-h-screen overflow-y-scroll`}
+      >
+        {children}
+      </body>
     </html>
   );
 }

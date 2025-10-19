@@ -43,7 +43,7 @@ export default async function PromiseDetailPage({
     <div className="mx-auto flex min-h-screen max-w-4xl flex-col gap-8 px-6 py-10 sm:px-10">
       <header className="flex items-center justify-between text-sm font-medium text-[#5a5a5a]">
         <Link
-          href="/"
+          href="/platforms"
           className="rounded px-2 py-1 text-[#111111] transition-colors hover:bg-[#e1e1e1]"
         >
           ← Back
