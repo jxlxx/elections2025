@@ -8,17 +8,17 @@ import { getText, Language } from "@/lib/content";
 const PARTY_TABS = [
   {
     id: "projet_montreal",
-    label: "Projet Montreal",
+    label: "Projet Montréal",
     short: "PM",
   },
   {
     id: "transition_montreal",
-    label: "Transition Montreal",
+    label: "Transition Montréal",
     short: "TM",
   },
   {
     id: "ensemble_montreal",
-    label: "Ensemble Montreal",
+    label: "Ensemble Montréal",
     short: "EM",
   },
 ];
@@ -185,14 +185,13 @@ export default function Home() {
   const partyLabel = selectedParty ? getText(selectedParty, language) : "";
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5] text-[#111111]">
+    <div className="min-h-screen  text-[#111111]">
       <div className="mx-auto flex max-w-5xl flex-col gap-8 px-6 py-12 sm:px-10">
         <header className="flex flex-col gap-6">
           <div className="flex items-start justify-between">
-            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-[#3f3f3f]">
-              Election Day: November 2nd
+            <p className="text-xl font-semibold uppercase text-[#3f3f3f]">
             </p>
-            <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.25em] text-[#3f3f3f]">
+            <div className="flex items-center gap-3 text-xl font-semibold uppercase">
               <button
                 type="button"
                 onClick={() => setLanguage("fr")}
@@ -215,7 +214,7 @@ export default function Home() {
             </div>
           </div>
 
-          <nav className="flex items-center justify-end gap-5 text-xs font-semibold uppercase tracking-[0.3em] text-[#3f3f3f]">
+          <nav className="flex items-center  gap-5 text-xl font-semibold uppercase">
             <a className="hover:text-[#111111]" href="#">
               Map
             </a>
@@ -231,7 +230,7 @@ export default function Home() {
           </nav>
 
           <div className="flex flex-col gap-3">
-            <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.3em] text-[#3f3f3f]">
+            <div className="flex items-center justify-between text-lg font-semibold uppercase">
               <button
                 type="button"
                 onClick={() => {
@@ -244,7 +243,7 @@ export default function Home() {
               >
                 <span aria-hidden>≡</span>
                 <span>
-                  Categories ({selectedCategoryCount}/{totalCategoryCount})
+                  CATEGORIES ({selectedCategoryCount}/{totalCategoryCount})
                 </span>
               </button>
 
@@ -259,7 +258,7 @@ export default function Home() {
                 className="flex items-center gap-2"
               >
                 <span aria-hidden>≡</span>
-                <span>People ({selectedDemographicCount}/{totalDemographicCount})</span>
+                <span>PEOPLE ({selectedDemographicCount}/{totalDemographicCount})</span>
               </button>
             </div>
 
@@ -300,26 +299,24 @@ export default function Home() {
                   key={tab.id}
                   type="button"
                   onClick={() => setSelectedParty(tab.id)}
-                  className={`relative -mb-[1px] px-4 py-2 text-sm font-semibold transition-colors ${
+                  className={`relative -mb-[1px] px-2 py-2 uppercase font-semibold transition-colors ${
                     isActive
-                      ? "border border-[#111111] border-b-[#f5f5f5] bg-[#f5f5f5] text-[#111111]"
+                      ? "border border-[#111111] border-b-[#ffffff] bg-[#ffffff] text-[#111111]"
                       : "border border-transparent text-[#6d6d6d] hover:text-[#111111]"
                   }`}
                 >
-                  <span className="hidden sm:inline">{tab.label}</span>
-                  <span className="sm:hidden">{tab.short}</span>
+                  <span className="hidden sm:inline">{tab.label}
+                    </span>
+                  
+                  <span className="sm:hidden">{tab.short}
+                    </span>
                 </button>
               );
             })}
           </div>
 
           <div className="flex flex-wrap items-baseline justify-between gap-3">
-            <h1 className="text-3xl font-semibold text-[#111111]">{partyLabel}</h1>
-            <span className="text-base text-[#4f4f4f]">
-              {totalPromisesSelected === 1
-                ? "1 promise"
-                : `${totalPromisesSelected} promises`}
-            </span>
+            <h1 className="text-3xl font-semibold text-[#111111]"></h1>
           </div>
         </section>
 
@@ -330,28 +327,28 @@ export default function Home() {
             return (
               <section key={categoryKey} className="space-y-4">
                 <div className="flex items-baseline gap-2">
-                  <h2 className="text-xl font-semibold text-[#111111]">{categoryLabel}</h2>
-                  <span className="text-sm text-[#6e6e6e]">[{detailCount}]</span>
+                  <h1 className="text-3xl font-semibold text-[#111111] uppercase">{categoryLabel}</h1>
+                  <span className="text-2xl font-semibold text-[#111111] uppercase">[{detailCount}]</span>
+                  
                 </div>
 
                 {promises.length === 0 ? (
                   <p className="text-base font-medium text-[#9b9b9b]">{emptyMessage}</p>
                 ) : (
-                  <div className="space-y-6 border-l border-[#d0d0d0] pl-4">
+                  <div className="space-y-6 pl-4">
                     {promises.map((promise) => {
                       const titleKey = `promise__${promise.id}__title`;
                       const title = getText(titleKey, language);
 
                       return (
-                        <article key={`${categoryKey}-${promise.id}`} className="space-y-3">
+                        <article key={`${categoryKey}-${promise.id}`}>
                           <Link
                             href={`/promise/${promise.id}`}
-                            className="inline-flex items-center gap-2 text-sm font-semibold text-[#111111] underline underline-offset-4 hover:opacity-80"
+                            className="inline-flex uppercase items-center text-lg font-semibold text-[#111111] underline underline-offset-4 hover:opacity-50"       
                           >
-                            {title}
-                            <span aria-hidden>↗</span>
+                            {">"} {title}
                           </Link>
-                          <ul className="list-disc space-y-2 pl-5 text-sm font-medium leading-relaxed">
+                          <ul className="list-disc space-y-2 pl-12 text-m leading-relaxed ">
                             {promise.details.map((detailKey) => (
                               <li key={detailKey}>{getText(detailKey, language)}</li>
                             ))}
