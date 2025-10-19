@@ -5,7 +5,24 @@ import { useMemo, useState } from "react";
 import promisesData from "@/data/promises.json";
 import { getText, Language } from "@/lib/content";
 
-const ALL_PARTIES = Array.from(new Set(promisesData.map((promise) => promise.party)));
+const PARTY_TABS = [
+  {
+    id: "projet_montreal",
+    label: "Projet Montreal",
+    short: "PM",
+  },
+  {
+    id: "transition_montreal",
+    label: "Transition Montreal",
+    short: "TM",
+  },
+  {
+    id: "ensemble_montreal",
+    label: "Ensemble Montreal",
+    short: "EM",
+  },
+];
+
 const ALL_CATEGORIES = Array.from(
   new Set(promisesData.flatMap((promise) => promise.category))
 );
@@ -13,23 +30,23 @@ const ALL_DEMOGRAPHICS = Array.from(
   new Set(promisesData.flatMap((promise) => promise.demographic))
 );
 
-type PromiseRecord = typeof promisesData[number];
-
-type FilterChipProps = {
+function FilterChip({
+  label,
+  active,
+  onClick,
+}: {
   label: string;
   active: boolean;
   onClick: () => void;
-};
-
-function FilterChip({ label, active, onClick }: FilterChipProps) {
+}) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`rounded-full border px-4 py-1 text-sm transition-colors ${
+      className={`rounded-full border px-4 py-1 text-sm font-medium transition-colors ${
         active
           ? "border-[#111111] bg-[#111111] text-[#f5f5f5]"
-          : "border-transparent bg-[#e7e7e7] text-[#222222] hover:bg-[#dcdcdc]"
+          : "border-[#d7d7d7] bg-white text-[#2d2d2d] hover:border-[#111111] hover:text-[#111111]"
       }`}
     >
       {label}
@@ -39,17 +56,15 @@ function FilterChip({ label, active, onClick }: FilterChipProps) {
 
 export default function Home() {
   const [language, setLanguage] = useState<Language>("en");
-  const [selectedParty, setSelectedParty] = useState<string>(ALL_PARTIES[0] ?? "");
+  const [selectedParty, setSelectedParty] = useState<string>(PARTY_TABS[0]?.id ?? "");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedDemographics, setSelectedDemographics] = useState<string[]>([]);
-  const [showAllCategories, setShowAllCategories] = useState(false);
-  const [showAllDemographics, setShowAllDemographics] = useState(false);
-
-  const partyLabel = selectedParty ? getText(selectedParty, language) : "";
+  const [categoriesOpen, setCategoriesOpen] = useState(false);
+  const [peopleOpen, setPeopleOpen] = useState(false);
 
   const filteredPromises = useMemo(() => {
     if (!selectedParty) {
-      return [] as PromiseRecord[];
+      return [] as typeof promisesData;
     }
 
     return promisesData.filter((promise) => {
@@ -86,7 +101,7 @@ export default function Home() {
   }, [filteredPromises]);
 
   const sortedCategories = useMemo(() => {
-    const sorted = [...ALL_CATEGORIES].sort((a, b) => {
+    return [...ALL_CATEGORIES].sort((a, b) => {
       const countA = categoryCounts.get(a) ?? 0;
       const countB = categoryCounts.get(b) ?? 0;
 
@@ -96,31 +111,19 @@ export default function Home() {
 
       return countB - countA;
     });
-
-    return sorted;
   }, [categoryCounts]);
 
   const totalCategoryCount = sortedCategories.length;
   const totalDemographicCount = ALL_DEMOGRAPHICS.length;
+  const selectedCategoryCount =
+    selectedCategories.length > 0 ? selectedCategories.length : totalCategoryCount;
+  const selectedDemographicCount =
+    selectedDemographics.length > 0
+      ? selectedDemographics.length
+      : totalDemographicCount;
 
-  const categoryChipOptions = useMemo(() => {
-    const base = showAllCategories ? sortedCategories : sortedCategories.slice(0, 5);
-    if (selectedCategories.length === 0) {
-      return base;
-    }
-
-    const seen = new Set(base);
-    const extras = selectedCategories.filter((category) => !seen.has(category));
-    return [...extras, ...base];
-  }, [showAllCategories, sortedCategories, selectedCategories]);
-
-  const categorySectionOrder = useMemo(() => {
-    if (selectedCategories.length > 0) {
-      return selectedCategories;
-    }
-
-    return sortedCategories;
-  }, [selectedCategories, sortedCategories]);
+  const categorySectionOrder =
+    selectedCategories.length > 0 ? selectedCategories : sortedCategories;
 
   const categorySections = categorySectionOrder.map((categoryKey) => {
     const promisesForCategory = filteredPromises.filter((promise) =>
@@ -140,6 +143,7 @@ export default function Home() {
 
   const promisesSelectedSet = useMemo(() => {
     const ids = new Set<string>();
+
     if (selectedCategories.length > 0) {
       filteredPromises.forEach((promise) => {
         if (promise.category.some((category) => selectedCategories.includes(category))) {
@@ -151,26 +155,11 @@ export default function Home() {
         ids.add(promise.id);
       });
     }
+
     return ids;
   }, [filteredPromises, selectedCategories]);
+
   const totalPromisesSelected = promisesSelectedSet.size;
-
-  const selectedCategoryCount = selectedCategories.length > 0 ? selectedCategories.length : totalCategoryCount;
-  const selectedDemographicCount = selectedDemographics.length > 0 ? selectedDemographics.length : totalDemographicCount;
-
-  const demographicBaseOptions = useMemo(() => {
-    const base = showAllDemographics
-      ? ALL_DEMOGRAPHICS
-      : ALL_DEMOGRAPHICS.slice(0, 5);
-
-    return base;
-  }, [showAllDemographics]);
-
-  const demographicChipOptions = useMemo(() => {
-    const seen = new Set(demographicBaseOptions);
-    const extras = selectedDemographics.filter((demographic) => !seen.has(demographic));
-    return [...extras, ...demographicBaseOptions];
-  }, [demographicBaseOptions, selectedDemographics]);
 
   const toggleCategory = (value: string) => {
     setSelectedCategories((previous) =>
@@ -193,149 +182,190 @@ export default function Home() {
       ? "Aucune promesse pour le moment."
       : "No promises listed yet.";
 
+  const partyLabel = selectedParty ? getText(selectedParty, language) : "";
+
   return (
-    <div className="mx-auto flex min-h-screen max-w-6xl flex-col gap-10 px-6 py-10 sm:px-10">
-      <header className="flex flex-col gap-6">
-        <div className="flex items-start justify-between">
-          <div className="space-y-1">
-            <p className="text-base font-semibold text-[#4f4f4f]">
-              Election Day: November 1st
+    <div className="min-h-screen bg-[#f5f5f5] text-[#111111]">
+      <div className="mx-auto flex max-w-5xl flex-col gap-8 px-6 py-12 sm:px-10">
+        <header className="flex flex-col gap-6">
+          <div className="flex items-start justify-between">
+            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-[#3f3f3f]">
+              Election Day: November 2nd
             </p>
-          </div>
-          <div className="flex items-center gap-2 text-base font-semibold text-[#4a4a4a]">
-            <button
-              type="button"
-              onClick={() => setLanguage("fr")}
-              className={`rounded px-3 py-1 transition-colors ${
-                language === "fr" ? "bg-[#111111] text-[#f5f5f5]" : "hover:bg-[#e1e1e1]"
-              }`}
-            >
-              FR
-            </button>
-            <button
-              type="button"
-              onClick={() => setLanguage("en")}
-              className={`rounded px-3 py-1 transition-colors ${
-                language === "en" ? "bg-[#111111] text-[#f5f5f5]" : "hover:bg-[#e1e1e1]"
-              }`}
-            >
-              EN
-            </button>
-          </div>
-        </div>
-
-        <div className="space-y-6">
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="text-base font-semibold text-[#3f3f3f]">Parties</span>
-            <div className="flex flex-wrap items-center gap-2">
-              {ALL_PARTIES.map((party) => (
-                <FilterChip
-                  key={party}
-                  label={getText(party, language)}
-                  active={selectedParty === party}
-                  onClick={() => setSelectedParty(party)}
-                />
-              ))}
+            <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.25em] text-[#3f3f3f]">
+              <button
+                type="button"
+                onClick={() => setLanguage("fr")}
+                className={`transition-colors ${
+                  language === "fr" ? "text-[#111111]" : "text-[#7a7a7a] hover:text-[#111111]"
+                }`}
+              >
+                FR
+              </button>
+              <span>|</span>
+              <button
+                type="button"
+                onClick={() => setLanguage("en")}
+                className={`transition-colors ${
+                  language === "en" ? "text-[#111111]" : "text-[#7a7a7a] hover:text-[#111111]"
+                }`}
+              >
+                EN
+              </button>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="text-base font-semibold text-[#3f3f3f]">
-              Categories ({selectedCategoryCount}/{totalCategoryCount})
-            </span>
-            <div className="flex flex-wrap items-center gap-2">
-              {categoryChipOptions.map((category) => (
-                <FilterChip
-                  key={category}
-                  label={getText(category, language)}
-                  active={selectedCategories.includes(category)}
-                  onClick={() => toggleCategory(category)}
-                />
-              ))}
+          <nav className="flex items-center justify-end gap-5 text-xs font-semibold uppercase tracking-[0.3em] text-[#3f3f3f]">
+            <a className="hover:text-[#111111]" href="#">
+              Map
+            </a>
+            <a className="hover:text-[#111111]" href="#">
+              Candidates
+            </a>
+            <a className="hover:text-[#111111]" href="#">
+              Quiz
+            </a>
+            <a className="hover:text-[#111111]" href="#">
+              About
+            </a>
+          </nav>
+
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.3em] text-[#3f3f3f]">
+              <button
+                type="button"
+                onClick={() => {
+                  setCategoriesOpen((prev) => !prev);
+                  if (!categoriesOpen && peopleOpen) {
+                    setPeopleOpen(false);
+                  }
+                }}
+                className="flex items-center gap-2"
+              >
+                <span aria-hidden>≡</span>
+                <span>
+                  Categories ({selectedCategoryCount}/{totalCategoryCount})
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setPeopleOpen((prev) => !prev);
+                  if (!peopleOpen && categoriesOpen) {
+                    setCategoriesOpen(false);
+                  }
+                }}
+                className="flex items-center gap-2"
+              >
+                <span aria-hidden>≡</span>
+                <span>People ({selectedDemographicCount}/{totalDemographicCount})</span>
+              </button>
             </div>
-            <button
-              type="button"
-              onClick={() => setShowAllCategories((previous) => !previous)}
-              className="text-base text-[#6b6b6b] underline underline-offset-4 hover:text-[#111111]"
-            >
-              {showAllCategories ? "hide" : "… see all"}
-            </button>
-          </div>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="text-base font-semibold text-[#3f3f3f]">
-              People ({selectedDemographicCount}/{totalDemographicCount})
-            </span>
-            <div className="flex flex-wrap items-center gap-2">
-              {demographicChipOptions.map((demographic) => (
-                <FilterChip
-                  key={demographic}
-                  label={getText(demographic, language)}
-                  active={selectedDemographics.includes(demographic)}
-                  onClick={() => toggleDemographic(demographic)}
-                />
-              ))}
-            </div>
-            <button
-              type="button"
-              onClick={() => setShowAllDemographics((previous) => !previous)}
-              className="text-base text-[#6b6b6b] underline underline-offset-4 hover:text-[#111111]"
-            >
-              {showAllDemographics ? "hide" : "… see all"}
-            </button>
-          </div>
-        </div>
-
-        <div className="flex flex-wrap items-baseline justify-between gap-3 border-t border-[#dcdcdc] pt-4">
-          <h1 className="text-3xl font-semibold text-[#111111]">{partyLabel || "Montreal Platforms"}</h1>
-          <span className="text-base text-[#4f4f4f]">
-            {totalPromisesSelected === 1 ? "1 promise" : `${totalPromisesSelected} promises`}
-          </span>
-        </div>
-      </header>
-
-      <main className="flex flex-col gap-10">
-        {categorySections.map(({ categoryKey, promises, detailCount }) => {
-          const categoryLabel = getText(categoryKey, language);
-
-          return (
-            <section key={categoryKey} className="space-y-4">
-              <div className="flex items-baseline gap-2">
-                <h2 className="text-xl font-semibold text-[#111111]">{categoryLabel}</h2>
-                <span className="text-sm text-[#6e6e6e]">[{detailCount}]</span>
+            {categoriesOpen && (
+              <div className="grid gap-3 rounded border border-[#dcdcdc] bg-white p-4 sm:grid-cols-2">
+                {sortedCategories.map((category) => (
+                  <FilterChip
+                    key={category}
+                    label={getText(category, language)}
+                    active={selectedCategories.includes(category)}
+                    onClick={() => toggleCategory(category)}
+                  />
+                ))}
               </div>
+            )}
 
-              {promises.length === 0 ? (
-                <p className="text-base font-medium text-[#9b9b9b]">{emptyMessage}</p>
-              ) : (
-                <div className="space-y-6 border-l border-[#d0d0d0] pl-4">
-                  {promises.map((promise) => {
-                    const titleKey = `promise__${promise.id}__title`;
-                    const title = getText(titleKey, language);
+            {peopleOpen && (
+              <div className="grid gap-3 rounded border border-[#dcdcdc] bg-white p-4 sm:grid-cols-2">
+                {ALL_DEMOGRAPHICS.map((demographic) => (
+                  <FilterChip
+                    key={demographic}
+                    label={getText(demographic, language)}
+                    active={selectedDemographics.includes(demographic)}
+                    onClick={() => toggleDemographic(demographic)}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        </header>
 
-                    return (
-                      <article key={`${categoryKey}-${promise.id}`} className="space-y-3">
-                        <Link
-                          href={`/promise/${promise.id}`}
-                          className="inline-flex items-center gap-2 text-sm font-semibold text-[#0f62fe] underline underline-offset-4 hover:text-[#083b9b]"
-                        >
-                          {title}
-                          <span aria-hidden>↗</span>
-                        </Link>
-                        <ul className="list-disc space-y-2 pl-5 text-sm font-medium leading-relaxed">
-                          {promise.details.map((detailKey) => (
-                            <li key={detailKey}>{getText(detailKey, language)}</li>
-                          ))}
-                        </ul>
-                      </article>
-                    );
-                  })}
+        <section className="space-y-4">
+          <div className="flex items-center gap-6 border-b border-[#111111]">
+            {PARTY_TABS.map((tab) => {
+              const isActive = tab.id === selectedParty;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setSelectedParty(tab.id)}
+                  className={`relative -mb-[1px] px-4 py-2 text-sm font-semibold transition-colors ${
+                    isActive
+                      ? "border border-[#111111] border-b-[#f5f5f5] bg-[#f5f5f5] text-[#111111]"
+                      : "border border-transparent text-[#6d6d6d] hover:text-[#111111]"
+                  }`}
+                >
+                  <span className="hidden sm:inline">{tab.label}</span>
+                  <span className="sm:hidden">{tab.short}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="flex flex-wrap items-baseline justify-between gap-3">
+            <h1 className="text-3xl font-semibold text-[#111111]">{partyLabel}</h1>
+            <span className="text-base text-[#4f4f4f]">
+              {totalPromisesSelected === 1
+                ? "1 promise"
+                : `${totalPromisesSelected} promises`}
+            </span>
+          </div>
+        </section>
+
+        <main className="flex flex-col gap-10 pb-16">
+          {categorySections.map(({ categoryKey, promises, detailCount }) => {
+            const categoryLabel = getText(categoryKey, language);
+
+            return (
+              <section key={categoryKey} className="space-y-4">
+                <div className="flex items-baseline gap-2">
+                  <h2 className="text-xl font-semibold text-[#111111]">{categoryLabel}</h2>
+                  <span className="text-sm text-[#6e6e6e]">[{detailCount}]</span>
                 </div>
-              )}
-            </section>
-          );
-        })}
-      </main>
+
+                {promises.length === 0 ? (
+                  <p className="text-base font-medium text-[#9b9b9b]">{emptyMessage}</p>
+                ) : (
+                  <div className="space-y-6 border-l border-[#d0d0d0] pl-4">
+                    {promises.map((promise) => {
+                      const titleKey = `promise__${promise.id}__title`;
+                      const title = getText(titleKey, language);
+
+                      return (
+                        <article key={`${categoryKey}-${promise.id}`} className="space-y-3">
+                          <Link
+                            href={`/promise/${promise.id}`}
+                            className="inline-flex items-center gap-2 text-sm font-semibold text-[#111111] underline underline-offset-4 hover:opacity-80"
+                          >
+                            {title}
+                            <span aria-hidden>↗</span>
+                          </Link>
+                          <ul className="list-disc space-y-2 pl-5 text-sm font-medium leading-relaxed">
+                            {promise.details.map((detailKey) => (
+                              <li key={detailKey}>{getText(detailKey, language)}</li>
+                            ))}
+                          </ul>
+                        </article>
+                      );
+                    })}
+                  </div>
+                )}
+              </section>
+            );
+          })}
+        </main>
+      </div>
     </div>
   );
 }

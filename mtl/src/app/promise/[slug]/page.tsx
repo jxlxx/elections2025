@@ -109,7 +109,7 @@ export default function PromiseDetailPage({ params }: PromiseDetailPageProps) {
                     href={source.url}
                     target="_blank"
                     rel="noreferrer"
-                    className="underline decoration-dotted underline-offset-4 hover:text-[#111111]"
+                    className="font-semibold text-[#111111] underline decoration-dotted underline-offset-4 hover:opacity-80"
                   >
                     {source.label}
                   </a>
