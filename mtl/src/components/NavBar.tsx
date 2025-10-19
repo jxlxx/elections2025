@@ -28,7 +28,7 @@ const NAV_LINKS: NavItem[] = [
   },
   { href: "/platforms", label: "platforms" },
   { href: "/map", label: "Map" },
-  { href: "/quiz", label: "Quiz" },
+  { href: "/quiz", label: "Who Should I Vote For?" },
 ];
 
 export function NavBar({ language, onLanguageChange }: NavBarProps) {
