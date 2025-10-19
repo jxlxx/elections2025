@@ -10,13 +10,16 @@ export function generateStaticParams() {
 }
 
 type PromiseDetailPageProps = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
-export default function PromiseDetailPage({ params }: PromiseDetailPageProps) {
-  const promise = promisesData.find((item) => item.id === params.slug);
+export default async function PromiseDetailPage({
+  params,
+}: PromiseDetailPageProps) {
+  const { slug } = await params;
+  const promise = promisesData.find((item) => item.id === slug);
 
   if (!promise) {
     notFound();
