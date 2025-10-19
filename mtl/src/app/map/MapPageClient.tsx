@@ -1,9 +1,10 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { NavBar } from "@/components/NavBar";
 import { SectionTitle } from "@/components/SectionTitle";
+import type { PartyTooltipEntry } from "@/components/VotingDistrictMap";
 import type { SelectedDistrict } from "@/lib/districts";
 import type { Language } from "@/lib/content";
 
@@ -55,6 +56,29 @@ const PARTY_TABS: PartyTab[] = [
   },
 ];
 
+const PARTY_TOOLTIP_ENTRIES: PartyTooltipEntry[] = PARTY_TABS.map((party) => ({
+  id: party.id,
+  label: party.label,
+}));
+
+const PARTY_SOURCE_LOOKUP = new Map(PARTY_TABS.map((party) => [party.source, party.id] as const));
+
+type CandidateDisplay = {
+  name: string;
+  post: string;
+  postType: string;
+};
+
+type NormalizedCandidate = CandidateDisplay & {
+  partyId: string;
+  post_no: string;
+};
+
+type DistrictPartyData = {
+  candidatesByParty: Record<string, CandidateDisplay[]>;
+  countsByParty: Record<string, number>;
+};
+
 export function MapPageClient({ initialSelected, candidates, posts }: MapPageClientProps) {
   const [language, setLanguage] = useState<Language>("en");
   const [selectedDistrict, setSelectedDistrict] = useState<SelectedDistrict>(initialSelected);
@@ -62,9 +86,101 @@ export function MapPageClient({ initialSelected, candidates, posts }: MapPageCli
 
   useEffect(() => {
     setSelectedDistrict(initialSelected);
-  }, [initialSelected.slug]);
+  }, [initialSelected]);
 
   const postsByNo = useMemo(() => new Map(posts.map((post) => [post.no, post])), [posts]);
+
+  const normalizedCandidates = useMemo(() => {
+    return candidates
+      .map((candidate) => {
+        const partyId = PARTY_SOURCE_LOOKUP.get(candidate.party);
+        if (!partyId) {
+          return null;
+        }
+        const post = postsByNo.get(candidate.post_no);
+        const name = `${candidate.first_name} ${candidate.last_name}`.replace(/\s+/g, " ").trim();
+
+        return {
+          partyId,
+          post_no: candidate.post_no,
+          name,
+          post: post?.poste_en ?? candidate.post_no,
+          postType: post?.type_en ?? "",
+        } satisfies NormalizedCandidate;
+      })
+      .filter(Boolean) as NormalizedCandidate[];
+  }, [candidates, postsByNo]);
+
+  const deriveDistrictData = useMemo(() => {
+    type CandidateWithKey = CandidateDisplay & { postKey: number };
+    const cache = new Map<number, DistrictPartyData>();
+
+    const createCandidateBuckets = () =>
+      PARTY_TABS.reduce<Record<string, CandidateWithKey[]>>((acc, party) => {
+        acc[party.id] = [];
+        return acc;
+      }, {});
+
+    const createCounts = () =>
+      PARTY_TABS.reduce<Record<string, number>>((acc, party) => {
+        acc[party.id] = 0;
+        return acc;
+      }, {});
+
+    return (districtNum: number): DistrictPartyData => {
+      if (cache.has(districtNum)) {
+        return cache.get(districtNum)!;
+      }
+
+      const candidateBuckets = createCandidateBuckets();
+      const countsByParty = createCounts();
+
+      const prefix = districtPostPrefix(districtNum);
+      const relevantPosts = prefix
+        ? posts.filter((post) => post.no.startsWith(prefix))
+        : [];
+      const relevantPostNos = relevantPosts.map((post) => post.no);
+      const relevantSet = new Set(relevantPostNos);
+      const sortKey = new Map(relevantPostNos.map((no, index) => [no, index]));
+
+      if (relevantSet.size > 0) {
+        normalizedCandidates.forEach((candidate) => {
+          if (!relevantSet.has(candidate.post_no)) {
+            return;
+          }
+          const bucket = candidateBuckets[candidate.partyId];
+          if (!bucket) {
+            return;
+          }
+          bucket.push({
+            name: candidate.name,
+            post: candidate.post,
+            postType: candidate.postType,
+            postKey: sortKey.get(candidate.post_no) ?? Number.MAX_SAFE_INTEGER,
+          });
+        });
+      }
+
+      const candidatesByParty: Record<string, CandidateDisplay[]> = {};
+
+      for (const party of PARTY_TABS) {
+        const bucket = candidateBuckets[party.id];
+        const ordered = bucket
+          .sort((a, b) => a.postKey - b.postKey || a.name.localeCompare(b.name))
+          .map((candidate) => ({
+            name: candidate.name,
+            post: candidate.post,
+            postType: candidate.postType,
+          }));
+        candidatesByParty[party.id] = ordered;
+        countsByParty[party.id] = ordered.length;
+      }
+
+      const data: DistrictPartyData = { candidatesByParty, countsByParty };
+      cache.set(districtNum, data);
+      return data;
+    };
+  }, [normalizedCandidates, posts]);
 
   const districtLabel = useMemo(() => {
     if (selectedDistrict.name) {
@@ -77,49 +193,17 @@ export function MapPageClient({ initialSelected, candidates, posts }: MapPageCli
     setSelectedDistrict(district);
   };
 
-  const districtPartyCandidates = useMemo(() => {
-    const prefix = districtPostPrefix(selectedDistrict.num);
-    if (!prefix) {
-      const empty: Record<string, Array<{ name: string; post: string; postType: string }>> = {};
-      for (const party of PARTY_TABS) {
-        empty[party.id] = [];
-      }
-      return empty;
-    }
+  const selectedDistrictData = useMemo(
+    () => deriveDistrictData(selectedDistrict.num),
+    [deriveDistrictData, selectedDistrict.num]
+  );
 
-    const relevantPostNos = posts
-      .filter((post) => post.no.startsWith(prefix))
-      .map((post) => post.no);
-    const relevantPostSet = new Set(relevantPostNos);
+  const getPartyCounts = useCallback(
+    (districtNum: number) => deriveDistrictData(districtNum).countsByParty,
+    [deriveDistrictData]
+  );
 
-    const result: Record<string, Array<{ name: string; post: string; postType: string }>> = {};
-
-    const sortKey = new Map(relevantPostNos.map((no, index) => [no, index]));
-
-    for (const party of PARTY_TABS) {
-      const partyCandidates = candidates
-        .filter(
-          (candidate) =>
-            candidate.party === party.source && relevantPostSet.has(candidate.post_no)
-        )
-        .map((candidate) => {
-          const post = postsByNo.get(candidate.post_no);
-          const name = `${candidate.first_name} ${candidate.last_name}`.replace(/\s+/g, " ").trim();
-          return {
-            name,
-            post: post?.poste_en ?? candidate.post_no,
-            postType: post?.type_en ?? "",
-            postKey: sortKey.get(candidate.post_no) ?? Number.MAX_SAFE_INTEGER,
-          };
-        })
-        .sort((a, b) => a.postKey - b.postKey || a.name.localeCompare(b.name))
-        .map(({ name, post, postType }) => ({ name, post, postType }));
-
-      result[party.id] = partyCandidates;
-    }
-
-    return result;
-  }, [candidates, posts, postsByNo, selectedDistrict.num]);
+  const districtPartyCandidates = selectedDistrictData.candidatesByParty;
 
   useEffect(() => {
     if (!PARTY_TABS.find((party) => party.id === activeParty)) {
@@ -137,6 +221,8 @@ export function MapPageClient({ initialSelected, candidates, posts }: MapPageCli
             selected={selectedDistrict}
             onDistrictSelect={handleSelect}
             refreshToken={activeParty}
+            getPartyCounts={getPartyCounts}
+            partyTooltipEntries={PARTY_TOOLTIP_ENTRIES}
           />
 
           <div className="pt-2">

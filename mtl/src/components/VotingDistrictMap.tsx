@@ -2,7 +2,7 @@
 
 import "leaflet/dist/leaflet.css";
 
-import type { Feature, FeatureCollection, Geometry } from "geojson";
+import type { FeatureCollection, Geometry } from "geojson";
 import type { Layer, Map as LeafletMap, Path, PathOptions } from "leaflet";
 import { GeoJSON, MapContainer, TileLayer } from "react-leaflet";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
@@ -87,13 +87,33 @@ function computeBounds(features: DistrictFeature[]) {
   return [[minLat, minLng], [maxLat, maxLng]] as [[number, number], [number, number]];
 }
 
+export type PartyTooltipEntry = {
+  id: string;
+  label: string;
+};
+
+type TooltipCapableLayer = Path & {
+  openTooltip?: () => Path;
+  closeTooltip?: () => Path;
+  isTooltipOpen?: () => boolean;
+  unbindTooltip?: () => Path;
+};
+
 export type VotingDistrictMapProps = {
   selected: SelectedDistrict;
   onDistrictSelect?: (district: SelectedDistrict) => void;
   refreshToken?: string | number;
+  getPartyCounts?: (districtNum: number) => Record<string, number> | null | undefined;
+  partyTooltipEntries?: PartyTooltipEntry[];
 };
 
-export function VotingDistrictMap({ selected, onDistrictSelect, refreshToken }: VotingDistrictMapProps) {
+export function VotingDistrictMap({
+  selected,
+  onDistrictSelect,
+  refreshToken,
+  getPartyCounts,
+  partyTooltipEntries,
+}: VotingDistrictMapProps) {
   const [mapInstance, setMapInstance] = useState<LeafletMap | null>(null);
   const bounds = useMemo(() => computeBounds(FILTERED_FEATURES), []);
   const layerByIdRef = useRef(new Map<number, Path>());
@@ -130,13 +150,39 @@ export function VotingDistrictMap({ selected, onDistrictSelect, refreshToken }: 
     const districtNum = typeof feature.properties?.num === "number" ? feature.properties.num : -1;
     const label = formatDistrictName(feature.properties);
     const slug = getDistrictSlug(feature.properties, districtId ?? undefined);
+    const districtName = typeof feature.properties?.nom === "string" ? feature.properties.nom.trim() : null;
+    const arrondissement =
+      typeof feature.properties?.arrondissement === "string"
+        ? feature.properties.arrondissement.trim()
+        : null;
     const pathLayer = layer as Path;
+    const tooltipLayer = pathLayer as TooltipCapableLayer;
 
     if (districtId !== null) {
       layerByIdRef.current.set(districtId, pathLayer);
       layer.on("remove", () => {
         layerByIdRef.current.delete(districtId);
       });
+
+      const counts = getPartyCounts?.(districtNum) ?? null;
+      const tooltipHtml = buildTooltipHtml({
+        districtName,
+        label,
+        arrondissement,
+        counts,
+        partyEntries: partyTooltipEntries,
+      });
+
+      if (tooltipHtml) {
+        tooltipLayer.unbindTooltip?.();
+        tooltipLayer.bindTooltip(tooltipHtml, {
+          direction: "center",
+          opacity: 0.9,
+          sticky: false,
+          className: "district-tooltip",
+          offset: [-140, -24],
+        });
+      }
     }
 
     applyStyleForLayer(districtId, pathLayer, false, selectedIdRef.current);
@@ -144,9 +190,17 @@ export function VotingDistrictMap({ selected, onDistrictSelect, refreshToken }: 
     pathLayer.on({
       mouseover: () => {
         applyStyleForLayer(districtId, pathLayer, true, selectedIdRef.current);
+        const isOpen = tooltipLayer.isTooltipOpen?.() ?? false;
+        if (!isOpen) {
+          tooltipLayer.openTooltip?.();
+        }
       },
       mouseout: () => {
         applyStyleForLayer(districtId, pathLayer, false, selectedIdRef.current);
+        const isOpen = tooltipLayer.isTooltipOpen?.() ?? false;
+        if (isOpen) {
+          tooltipLayer.closeTooltip?.();
+        }
       },
       click: () => {
         if (districtId === null) {
@@ -166,6 +220,10 @@ export function VotingDistrictMap({ selected, onDistrictSelect, refreshToken }: 
         pathLayer.bringToFront();
 
         onDistrictSelect?.({ id: districtId, name: label, slug, num: districtNum });
+        const isOpen = tooltipLayer.isTooltipOpen?.() ?? false;
+        if (!isOpen) {
+          tooltipLayer.openTooltip?.();
+        }
       },
     });
   };
@@ -191,6 +249,60 @@ export function VotingDistrictMap({ selected, onDistrictSelect, refreshToken }: 
       </MapContainer>
     </div>
   );
+}
+
+type TooltipParams = {
+  districtName: string | null;
+  label: string | null;
+  arrondissement: string | null;
+  counts: Record<string, number> | null | undefined;
+  partyEntries?: PartyTooltipEntry[];
+};
+
+function buildTooltipHtml({
+  districtName,
+  label,
+  arrondissement,
+  counts,
+  partyEntries,
+}: TooltipParams): string | null {
+  const displayName = districtName ?? label ?? "";
+  const escapedName = displayName ? escapeHtml(displayName) : "";
+  const escapedArrondissement = arrondissement ? escapeHtml(arrondissement) : "";
+
+  const partyRows = partyEntries
+    ?.map((party) => {
+      const count = counts ? counts[party.id] ?? 0 : 0;
+      return `<div style="display:flex;justify-content:space-between;font-size:11px;text-transform:uppercase;color:#111111;"><span>${escapeHtml(
+        party.label
+      )}</span><span>${count}</span></div>`;
+    })
+    .join("") ?? "";
+
+  if (!escapedName && !escapedArrondissement && !partyRows) {
+    return null;
+  }
+
+  const nameMarkup = escapedName
+    ? `<div style="font-size:14px;font-weight:600;text-transform:uppercase;color:#111111;">${escapedName}</div>`
+    : "";
+  const arrondissementMarkup = escapedArrondissement
+    ? `<div style="margin-top:4px;font-size:11px;text-transform:uppercase;color:#6d6d6d;">${escapedArrondissement}</div>`
+    : "";
+  const countsMarkup = partyRows
+    ? `<div style="margin-top:8px;display:flex;flex-direction:column;gap:4px;">${partyRows}</div>`
+    : "";
+
+  return `<div style="background:#ffffff;padding:12px;min-width:200px;box-shadow:0 4px 16px rgba(17,17,17,0.18);">${nameMarkup}${arrondissementMarkup}${countsMarkup}</div>`;
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 function applyStyleForLayer(

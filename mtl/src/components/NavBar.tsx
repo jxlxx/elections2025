@@ -28,7 +28,6 @@ const NAV_LINKS: NavItem[] = [
   },
   { href: "/platforms", label: "platforms" },
   { href: "/map", label: "Map" },
-  { href: "/candidates", label: "Candidates" },
   { href: "/quiz", label: "Quiz" },
 ];
 
