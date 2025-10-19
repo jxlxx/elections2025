@@ -5,6 +5,8 @@ import { useMemo, useState } from "react";
 import promisesData from "@/data/promises.json";
 import { getText, Language } from "@/lib/content";
 
+type FilterModalType = "categories" | "people" | null;
+
 const PARTY_TABS = [
   {
     id: "projet_montreal",
@@ -59,8 +61,8 @@ export default function Home() {
   const [selectedParty, setSelectedParty] = useState<string>(PARTY_TABS[0]?.id ?? "");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedDemographics, setSelectedDemographics] = useState<string[]>([]);
-  const [categoriesOpen, setCategoriesOpen] = useState(false);
-  const [peopleOpen, setPeopleOpen] = useState(false);
+  const [filterMenuOpen, setFilterMenuOpen] = useState(false);
+  const [activeFilterModal, setActiveFilterModal] = useState<FilterModalType>(null);
 
   const filteredPromises = useMemo(() => {
     if (!selectedParty) {
@@ -115,6 +117,7 @@ export default function Home() {
 
   const totalCategoryCount = sortedCategories.length;
   const totalDemographicCount = ALL_DEMOGRAPHICS.length;
+
   const selectedCategoryCount =
     selectedCategories.length > 0 ? selectedCategories.length : totalCategoryCount;
   const selectedDemographicCount =
@@ -177,12 +180,31 @@ export default function Home() {
     );
   };
 
+  const clearFilters = (type: FilterModalType) => {
+    if (type === "categories") {
+      setSelectedCategories([]);
+    }
+    if (type === "people") {
+      setSelectedDemographics([]);
+    }
+  };
+
   const emptyMessage =
     language === "fr"
       ? "Aucune promesse pour le moment."
       : "No promises listed yet.";
 
   const partyLabel = selectedParty ? getText(selectedParty, language) : "";
+  const filtersActive =
+    selectedCategories.length > 0 || selectedDemographics.length > 0;
+
+  const openFilterModal = (type: FilterModalType) => {
+    if (!type) return;
+    setActiveFilterModal(type);
+    setFilterMenuOpen(false);
+  };
+
+  const closeModal = () => setActiveFilterModal(null);
 
   return (
     <div className="min-h-screen  text-[#111111]">
@@ -228,95 +250,80 @@ export default function Home() {
               About
             </a>
           </nav>
-
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center justify-between text-lg font-semibold uppercase">
-              <button
-                type="button"
-                onClick={() => {
-                  setCategoriesOpen((prev) => !prev);
-                  if (!categoriesOpen && peopleOpen) {
-                    setPeopleOpen(false);
-                  }
-                }}
-                className="flex items-center gap-2"
-              >
-                <span aria-hidden>≡</span>
-                <span>
-                  CATEGORIES ({selectedCategoryCount}/{totalCategoryCount})
-                </span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setPeopleOpen((prev) => !prev);
-                  if (!peopleOpen && categoriesOpen) {
-                    setCategoriesOpen(false);
-                  }
-                }}
-                className="flex items-center gap-2"
-              >
-                <span aria-hidden>≡</span>
-                <span>PEOPLE ({selectedDemographicCount}/{totalDemographicCount})</span>
-              </button>
-            </div>
-
-            {categoriesOpen && (
-              <div className="grid gap-3 rounded border border-[#dcdcdc] bg-white p-4 sm:grid-cols-2">
-                {sortedCategories.map((category) => (
-                  <FilterChip
-                    key={category}
-                    label={getText(category, language)}
-                    active={selectedCategories.includes(category)}
-                    onClick={() => toggleCategory(category)}
-                  />
-                ))}
-              </div>
-            )}
-
-            {peopleOpen && (
-              <div className="grid gap-3 rounded border border-[#dcdcdc] bg-white p-4 sm:grid-cols-2">
-                {ALL_DEMOGRAPHICS.map((demographic) => (
-                  <FilterChip
-                    key={demographic}
-                    label={getText(demographic, language)}
-                    active={selectedDemographics.includes(demographic)}
-                    onClick={() => toggleDemographic(demographic)}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
         </header>
 
         <section className="space-y-4">
           <div className="flex items-center gap-6 border-b border-[#111111]">
-            {PARTY_TABS.map((tab) => {
-              const isActive = tab.id === selectedParty;
-              return (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onClick={() => setSelectedParty(tab.id)}
-                  className={`relative -mb-[1px] px-2 py-2 uppercase font-semibold transition-colors ${
-                    isActive
-                      ? "border border-[#111111] border-b-[#ffffff] bg-[#ffffff] text-[#111111]"
-                      : "border border-transparent text-[#6d6d6d] hover:text-[#111111]"
-                  }`}
-                >
-                  <span className="hidden sm:inline">{tab.label}
+            <div className="flex flex-1 items-center gap-4">
+              {PARTY_TABS.map((tab) => {
+                const isActive = tab.id === selectedParty;
+                return (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() => setSelectedParty(tab.id)}
+                    className={`relative -mb-[1px] px-2 py-2 uppercase font-semibold transition-colors ${
+                      isActive
+                        ? "border border-[#111111] border-b-[#ffffff] bg-[#ffffff] text-[#111111]"
+                        : "border border-transparent text-[#6d6d6d] hover:text-[#111111]"
+                    }`}
+                  >
+                    <span className="hidden sm:inline">{tab.label}</span>
+                    <span className="sm:hidden">{tab.short}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="relative">
+              <button
+                type="button"
+                aria-haspopup="true"
+                aria-expanded={filterMenuOpen}
+                onClick={() => setFilterMenuOpen((prev) => !prev)}
+                className="relative flex items-center gap-2 text-lg font-semibold uppercase"
+              >
+                <span aria-hidden>≡</span>
+                <span className="sr-only">Filters</span>
+                {filtersActive && (
+                  <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-[#111111]" aria-hidden />
+                )}
+              </button>
+
+              {filterMenuOpen && (
+                <div className="absolute right-0 mt-2 w-56 border border-[#111111] bg-white">
+                  <button
+                    type="button"
+                    onClick={() => openFilterModal("categories")}
+                    className="flex w-full items-center justify-between px-4 py-3 text-lg font-semibold uppercase hover:bg-[#f0f0f0]"
+                  >
+                    <span>CATEGORIES</span>
+                    <span>
+                      {selectedCategoryCount}/{totalCategoryCount}
                     </span>
-                  
-                  <span className="sm:hidden">{tab.short}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => openFilterModal("people")}
+                    className="flex w-full items-center justify-between px-4 py-3 text-lg font-semibold uppercase hover:bg-[#f0f0f0]"
+                  >
+                    <span>PEOPLE</span>
+                    <span>
+                      {selectedDemographicCount}/{totalDemographicCount}
                     </span>
-                </button>
-              );
-            })}
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="flex flex-wrap items-baseline justify-between gap-3">
-            <h1 className="text-3xl font-semibold text-[#111111]"></h1>
+            <h1 className="text-3xl font-semibold text-[#111111] uppercase">{partyLabel}</h1>
+            <span className="text-base text-[#4f4f4f]">
+              {totalPromisesSelected === 1
+                ? "1 promise"
+                : `${totalPromisesSelected} promises`}
+            </span>
           </div>
         </section>
 
@@ -329,7 +336,6 @@ export default function Home() {
                 <div className="flex items-baseline gap-2">
                   <h1 className="text-3xl font-semibold text-[#111111] uppercase">{categoryLabel}</h1>
                   <span className="text-2xl font-semibold text-[#111111] uppercase">[{detailCount}]</span>
-                  
                 </div>
 
                 {promises.length === 0 ? (
@@ -344,7 +350,7 @@ export default function Home() {
                         <article key={`${categoryKey}-${promise.id}`}>
                           <Link
                             href={`/promise/${promise.id}`}
-                            className="inline-flex uppercase items-center text-lg font-semibold text-[#111111] underline underline-offset-4 hover:opacity-50"       
+                            className="inline-flex uppercase items-center text-lg font-semibold text-[#111111] underline underline-offset-4 hover:opacity-50"
                           >
                             {">"} {title}
                           </Link>
@@ -363,6 +369,51 @@ export default function Home() {
           })}
         </main>
       </div>
+
+      {activeFilterModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 py-6">
+          <div className="max-h-full w-full max-w-4xl overflow-hidden border border-[#111111] bg-white">
+            <header className="flex items-center justify-between border-b border-[#111111] px-6 py-4">
+              <h2 className="text-lg font-semibold uppercase">
+                {activeFilterModal === "categories" ? "Categories" : "People"}
+              </h2>
+              <div className="flex items-center gap-4 text-lg font-semibold uppercase">
+                <button
+                  type="button"
+                  onClick={() => clearFilters(activeFilterModal)}
+                  className="text-[#7a7a7a] hover:text-[#111111]"
+                >
+                  Clear
+                </button>
+                <button type="button" onClick={closeModal} className="text-[#111111]">
+                  Done
+                </button>
+              </div>
+            </header>
+            <div className="max-h-[60vh] overflow-auto border-b border-[#111111] p-6">
+              <div className="grid gap-3 sm:grid-cols-2">
+                {activeFilterModal === "categories"
+                  ? sortedCategories.map((category) => (
+                      <FilterChip
+                        key={category}
+                        label={getText(category, language)}
+                        active={selectedCategories.includes(category)}
+                        onClick={() => toggleCategory(category)}
+                      />
+                    ))
+                  : ALL_DEMOGRAPHICS.map((demographic) => (
+                      <FilterChip
+                        key={demographic}
+                        label={getText(demographic, language)}
+                        active={selectedDemographics.includes(demographic)}
+                        onClick={() => toggleDemographic(demographic)}
+                      />
+                    ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
