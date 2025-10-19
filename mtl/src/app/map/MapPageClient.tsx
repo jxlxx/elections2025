@@ -67,6 +67,7 @@ type CandidateDisplay = {
   name: string;
   post: string;
   postType: string;
+  slug: string;
 };
 
 type NormalizedCandidate = CandidateDisplay & {
@@ -98,7 +99,9 @@ export function MapPageClient({ initialSelected, candidates, posts }: MapPageCli
           return null;
         }
         const post = postsByNo.get(candidate.post_no);
-        const name = `${candidate.first_name} ${candidate.last_name}`.replace(/\s+/g, " ").trim();
+        const firstName = candidate.first_name.replace(/\s+/g, " ").trim();
+        const lastName = candidate.last_name.replace(/\s+/g, " ").trim();
+        const name = `${firstName} ${lastName}`.replace(/\s+/g, " ").trim();
 
         return {
           partyId,
@@ -106,6 +109,7 @@ export function MapPageClient({ initialSelected, candidates, posts }: MapPageCli
           name,
           post: post?.poste_en ?? candidate.post_no,
           postType: post?.type_en ?? "",
+          slug: slugifyCandidateName(firstName, lastName),
         } satisfies NormalizedCandidate;
       })
       .filter(Boolean) as NormalizedCandidate[];
@@ -156,6 +160,7 @@ export function MapPageClient({ initialSelected, candidates, posts }: MapPageCli
             name: candidate.name,
             post: candidate.post,
             postType: candidate.postType,
+            slug: candidate.slug,
             postKey: sortKey.get(candidate.post_no) ?? Number.MAX_SAFE_INTEGER,
           });
         });
@@ -171,6 +176,7 @@ export function MapPageClient({ initialSelected, candidates, posts }: MapPageCli
             name: candidate.name,
             post: candidate.post,
             postType: candidate.postType,
+            slug: candidate.slug,
           }));
         candidatesByParty[party.id] = ordered;
         countsByParty[party.id] = ordered.length;
@@ -253,13 +259,20 @@ export function MapPageClient({ initialSelected, candidates, posts }: MapPageCli
             <div className="space-y-3">
               {districtPartyCandidates[activeParty]?.length ? (
                 <ul className="space-y-2">
-                  {districtPartyCandidates[activeParty].map((candidate) => (
-                    <li key={`${activeParty}-${candidate.name}-${candidate.post}`} className="flex flex-col">
-                      <span className="text-lg font-semibold uppercase">{candidate.name}</span>
-                      <span className="text-sm text-[#5a5a5a]">{candidate.postType}</span>
-                      <span className="text-sm text-[#5a5a5a]">{candidate.post}</span>
-                    </li>
-                  ))}
+              {districtPartyCandidates[activeParty].map((candidate) => (
+                <li key={`${activeParty}-${candidate.name}-${candidate.post}`} className="flex flex-col">
+                  <a
+                    href={getCandidateProfileUrl(candidate.slug, language)}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-lg font-semibold uppercase hover:underline"
+                  >
+                    {candidate.name}
+                  </a>
+                  <span className="text-sm text-[#5a5a5a]">{candidate.postType}</span>
+                  <span className="text-sm text-[#5a5a5a]">{candidate.post}</span>
+                </li>
+              ))}
                 </ul>
               ) : (
                 <p className="text-sm text-[#5a5a5a]">
@@ -283,6 +296,22 @@ function districtPostPrefix(num: number): string {
   const arr = Math.floor(num / 10);
   const seat = num % 10;
   return `${arr}.${seat}`;
+}
+
+function slugifyCandidateName(firstName: string, lastName: string): string {
+  const combined = `${firstName} ${lastName}`
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  return combined.length > 0 ? combined : "candidate";
+}
+
+function getCandidateProfileUrl(slug: string, language: Language): string {
+  const langSegment = language === "fr" ? "fr" : "en";
+  return `https://elections.montreal.ca/${langSegment}/candidates/${slug}/`;
 }
 
 export default MapPageClient;
