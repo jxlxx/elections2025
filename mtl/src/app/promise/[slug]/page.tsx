@@ -89,7 +89,7 @@ export default function PromiseDetailPage({ params }: PromiseDetailPageProps) {
 
         <section className="space-y-3">
           <h2 className="text-base font-semibold text-[#4c4c4c]">Details</h2>
-          <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed">
+          <ul className="list-disc space-y-2 pl-5 text-sm font-medium leading-relaxed">
             {details.map((detail) => (
               <li key={detail}>{detail}</li>
             ))}

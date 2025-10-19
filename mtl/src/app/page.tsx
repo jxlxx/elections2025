@@ -306,7 +306,7 @@ export default function Home() {
               </div>
 
               {promises.length === 0 ? (
-                <p className="text-base text-[#9b9b9b]">{emptyMessage}</p>
+                <p className="text-base font-medium text-[#9b9b9b]">{emptyMessage}</p>
               ) : (
                 <div className="space-y-6 border-l border-[#d0d0d0] pl-4">
                   {promises.map((promise) => {
@@ -322,7 +322,7 @@ export default function Home() {
                           {title}
                           <span aria-hidden>↗</span>
                         </Link>
-                        <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed">
+                        <ul className="list-disc space-y-2 pl-5 text-sm font-medium leading-relaxed">
                           {promise.details.map((detailKey) => (
                             <li key={detailKey}>{getText(detailKey, language)}</li>
                           ))}
