@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Fira_Code } from "next/font/google";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
 
 const firaCode = Fira_Code({
@@ -21,10 +22,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${firaCode.variable} bg-[#f5f5f5] text-[#111111] antialiased min-h-screen overflow-y-scroll`}
-      >
-        {children}
+      <body className={`${firaCode.variable} antialiased min-h-screen overflow-y-scroll`}>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );

@@ -48,8 +48,8 @@ function FilterChip({
       onClick={onClick}
       className={`rounded-full border px-4 py-1 text-sm font-medium transition-colors ${
         active
-          ? "border-[#111111] bg-[#111111] text-[#f5f5f5]"
-          : "border-[#d7d7d7] bg-white text-[#2d2d2d] hover:border-[#111111] hover:text-[#111111]"
+          ? "border-[#cccccc] bg-[#111111] text-[#f5f5f5]"
+          : "border-[#d7d7d7] bg-white text-[#2d2d2d] hover:border-[#cccccc] hover:text-[#111111]"
       }`}
     >
       {label}
@@ -213,7 +213,7 @@ export default function PlatformsPage() {
         <NavBar language={language} onLanguageChange={setLanguage} />
 
         <section className="space-y-4">
-          <div className="flex items-center gap-6 border-b border-[#111111]">
+          <div className="flex items-center gap-6 border-b border-[#cccccc]">
             <div className="flex flex-1 items-center gap-4">
               {PARTY_TABS.map((tab) => {
                 const isActive = tab.id === selectedParty;
@@ -224,7 +224,7 @@ export default function PlatformsPage() {
                     onClick={() => setSelectedParty(tab.id)}
                     className={`relative -mb-[1px] px-2 py-2 uppercase font-semibold transition-colors ${
                       isActive
-                        ? "border border-[#111111] border-b-[#ffffff] bg-[#ffffff] text-[#111111]"
+                        ? "border border-[#cccccc] theme-tab-active"
                         : "border border-transparent text-[#6d6d6d] hover:text-[#111111]"
                     }`}
                   >
@@ -251,7 +251,7 @@ export default function PlatformsPage() {
               </button>
 
               {filterMenuOpen && (
-                <div className="absolute right-0 mt-2 w-56 border border-[#111111] bg-white">
+                <div className="absolute right-0 mt-2 w-56 border border-[#cccccc] bg-white">
                   <button
                     type="button"
                     onClick={() => openFilterModal("categories")}
@@ -331,8 +331,8 @@ export default function PlatformsPage() {
 
       {activeFilterModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 py-6">
-          <div className="max-h-full w-full max-w-4xl overflow-hidden border border-[#111111] bg-white">
-            <header className="flex items-center justify-between border-b border-[#111111] px-6 py-4">
+          <div className="max-h-full w-full max-w-4xl overflow-hidden border border-[#cccccc] bg-white">
+            <header className="flex items-center justify-between border-b border-[#cccccc] px-6 py-4">
               <h2 className="text-lg font-semibold uppercase">
                 {activeFilterModal === "categories" ? "Categories" : "People"}
               </h2>
@@ -349,7 +349,7 @@ export default function PlatformsPage() {
                 </button>
               </div>
             </header>
-            <div className="max-h-[60vh] overflow-auto border-b border-[#111111] p-6">
+            <div className="max-h-[60vh] overflow-auto border-b border-[#cccccc] p-6">
               <div className="grid gap-3 sm:grid-cols-2">
                 {activeFilterModal === "categories"
                   ? sortedCategories.map((category) => (

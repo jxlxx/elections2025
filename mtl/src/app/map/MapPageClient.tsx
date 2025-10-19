@@ -10,7 +10,7 @@ import type { Language } from "@/lib/content";
 
 const VotingDistrictMap = dynamic(() => import("@/components/VotingDistrictMap"), {
   ssr: false,
-  loading: () => <div className="h-[32rem] w-full border border-[#111111]" />,
+  loading: () => <div className="h-[32rem] w-full border border-[#cccccc]" />,
 });
 
 type MapPageClientProps = {
@@ -236,7 +236,7 @@ export function MapPageClient({ initialSelected, candidates, posts }: MapPageCli
           </div>
 
           <div className="space-y-4">
-            <div className="relative flex flex-wrap items-end gap-3 border-b border-[#111111]">
+            <div className="relative flex flex-wrap items-end gap-3 border-b border-[#cccccc]">
               {PARTY_TABS.map((party) => {
                 const isActive = party.id === activeParty;
                 return (
@@ -246,7 +246,7 @@ export function MapPageClient({ initialSelected, candidates, posts }: MapPageCli
                     onClick={() => setActiveParty(party.id)}
                     className={`uppercase font-semibold px-3 py-2 leading-tight transition-colors ${
                       isActive
-                        ? "relative z-10 -mb-px border border-[#111111] border-b-[#ffffff] bg-[#ffffff] text-[#111111]"
+                        ? "relative z-10 -mb-px border border-[#cccccc] theme-tab-active"
                         : "border border-transparent text-[#6d6d6d] hover:text-[#111111]"
                     }`}
                   >
@@ -264,7 +264,7 @@ export function MapPageClient({ initialSelected, candidates, posts }: MapPageCli
                   <a
                     href={getCandidateProfileUrl(candidate.slug, language)}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="text-lg font-semibold uppercase hover:underline"
                   >
                     {candidate.name}

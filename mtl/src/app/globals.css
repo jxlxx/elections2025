@@ -21,6 +21,55 @@ body {
   font-family: var(--font-fira-code, "Fira Code", monospace);
 }
 
+body[data-theme="dark"] {
+  --background: #141414;
+  --foreground: #ffffff;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+body[data-theme="dark"] .text-\[\#111111\],
+body[data-theme="dark"] .text-\[\#2d2d2d\],
+body[data-theme="dark"] .text-\[\#7a7a7a\],
+body[data-theme="dark"] .text-\[\#6d6d6d\],
+body[data-theme="dark"] .text-\[\#5a5a5a\],
+body[data-theme="dark"] .text-\[\#4c4c4c\],
+body[data-theme="dark"] .text-\[\#9b9b9b\],
+body[data-theme="dark"] .text-\[\#4f4f4f\],
+body[data-theme="dark"] .text-\[\#f5f5f5\] {
+  color: #ffffff !important;
+}
+
+body[data-theme="dark"] .hover\:text-\[\#111111\]:hover,
+body[data-theme="dark"] .hover\:text-\[\#111111\]:focus,
+body[data-theme="dark"] .hover\:text-\[\#111111\]:active {
+  color: #ffffff !important;
+}
+
+body[data-theme="dark"] .bg-\[\#f5f5f5\],
+body[data-theme="dark"] .bg-white,
+body[data-theme="dark"] .bg-\[\#ffffff\] {
+  background-color: #1f1f1f !important;
+}
+
+body[data-theme="dark"] .bg-\[\#111111\] {
+  background-color: #ececec !important;
+  color: #111111 !important;
+}
+
+body[data-theme="dark"] .border-\[\#111111\],
+body[data-theme="dark"] .border-b-\[\#111111\] {
+  border-color: #4a4a4a !important;
+}
+
+body[data-theme="dark"] .border-\[\#d7d7d7\] {
+  border-color: #343434 !important;
+}
+
+body[data-theme="dark"] .border-b-\[\#ffffff\] {
+  border-bottom-color: #1a1a1a !important;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -28,4 +77,54 @@ a {
 
 button {
   font-family: inherit;
+}
+
+.theme-tab-active {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+  border-bottom-width: 0 !important;
+  box-shadow: 0 1px 0 var(--background) !important;
+}
+
+.promise-chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  color: #1f1f1f;
+}
+
+.promise-chip--filled {
+  background-color: #dedede;
+}
+
+.promise-chip--outlined {
+  border-color: #d4d4d4;
+  background-color: transparent;
+}
+
+body[data-theme="dark"] .promise-chip {
+  color: #ffffff;
+}
+
+body[data-theme="dark"] .promise-chip--filled {
+  background-color: #2a2a2a;
+}
+
+body[data-theme="dark"] .promise-chip--outlined {
+  border-color: #505050;
+  background-color: transparent;
+}
+
+body[data-theme="dark"] .hover\:bg-\[#f0f0f0\]:hover,
+body[data-theme="dark"] .hover\:bg-\[#f0f0f0\]:focus,
+body[data-theme="dark"] .hover\:bg-\[#f0f0f0\]:active {
+  background-color: #2f2f2f !important;
+}
+
+.leaflet-tooltip.district-tooltip {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
 }

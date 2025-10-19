@@ -6,6 +6,7 @@ import type { FeatureCollection, Geometry } from "geojson";
 import type { Layer, Map as LeafletMap, Path, PathOptions } from "leaflet";
 import { GeoJSON, MapContainer, TileLayer } from "react-leaflet";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useTheme, type Theme } from "@/components/ThemeProvider";
 import electoralDistricts from "@/data/districts-electoraux-2021.json" assert { type: "json" };
 import {
   filterMontrealDistricts,
@@ -18,31 +19,65 @@ import {
 
 const DEFAULT_CENTER: [number, number] = [45.50884, -73.56168];
 
-const BASE_STYLE: PathOptions = {
-  color: "#0c4a3f",
-  weight: 1,
-  fillColor: "#24a393",
-  fillOpacity: 0.25,
+type StyleBundle = {
+  base: PathOptions;
+  hover: PathOptions;
+  selected: PathOptions;
+  selectedHover: PathOptions;
 };
 
-const HOVER_STYLE: PathOptions = {
-  ...BASE_STYLE,
-  fillOpacity: 0.4,
-  weight: 2,
-};
+function createStyleBundle(theme: Theme): StyleBundle {
+  if (theme === "dark") {
+    const base: PathOptions = {
+      color: "#ffb36b",
+      weight: 1,
+      fillColor: "#f7a55a",
+      fillOpacity: 0.35,
+    };
+    const hover: PathOptions = {
+      ...base,
+      fillOpacity: 0.5,
+      weight: 2,
+    };
+    const selected: PathOptions = {
+      ...base,
+      color: "#ffd5a2",
+      fillColor: "#ff8f2a",
+      fillOpacity: 0.8,
+      weight: 3,
+    };
+    const selectedHover: PathOptions = {
+      ...selected,
+      fillOpacity: 0.9,
+    };
+    return { base, hover, selected, selectedHover };
+  }
 
-const SELECTED_STYLE: PathOptions = {
-  ...BASE_STYLE,
-  fillColor: "#125d53",
-  fillOpacity: 0.75,
-  weight: 3,
-  color: "#063c32",
-};
+  const base: PathOptions = {
+    color: "#a03a30",
+    weight: 1,
+    fillColor: "#f38a72",
+    fillOpacity: 0.25,
+  };
+  const hover: PathOptions = {
+    ...base,
+    fillOpacity: 0.4,
+    weight: 2,
+  };
+  const selected: PathOptions = {
+    ...base,
+    color: "#792a23",
+    fillColor: "#e76049",
+    fillOpacity: 0.75,
+    weight: 3,
+  };
+  const selectedHover: PathOptions = {
+    ...selected,
+    fillOpacity: 0.85,
+  };
 
-const SELECTED_HOVER_STYLE: PathOptions = {
-  ...SELECTED_STYLE,
-  fillOpacity: 0.85,
-};
+  return { base, hover, selected, selectedHover };
+}
 
 const districtCollection = electoralDistricts as FeatureCollection<Geometry, DistrictProperties>;
 const FILTERED_FEATURES: DistrictFeature[] = filterMontrealDistricts(districtCollection);
@@ -114,15 +149,36 @@ export function VotingDistrictMap({
   getPartyCounts,
   partyTooltipEntries,
 }: VotingDistrictMapProps) {
+  const { theme } = useTheme();
   const [mapInstance, setMapInstance] = useState<LeafletMap | null>(null);
   const bounds = useMemo(() => computeBounds(FILTERED_FEATURES), []);
   const layerByIdRef = useRef(new Map<number, Path>());
   const selectedIdRef = useRef(selected.id);
 
+  const tileUrl = theme === "dark"
+    ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+    : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
+
+  const styleBundle = useMemo(() => createStyleBundle(theme), [theme]);
+
+  const styleBundleRef = useRef(styleBundle);
+  styleBundleRef.current = styleBundle;
+
+  useEffect(() => {
+    styleBundleRef.current = styleBundle;
+    layerByIdRef.current.forEach((layer, id) => {
+      applyStyleForLayer(id, layer, false, selectedIdRef.current, styleBundle);
+      if (id === selectedIdRef.current) {
+        layer.bringToFront();
+      }
+    });
+  }, [styleBundle]);
+
   useLayoutEffect(() => {
     selectedIdRef.current = selected.id;
+    const styles = styleBundleRef.current;
     layerByIdRef.current.forEach((layer, id) => {
-      applyStyleForLayer(id, layer, false, selectedIdRef.current);
+      applyStyleForLayer(id, layer, false, selectedIdRef.current, styles);
       if (id === selectedIdRef.current) {
         layer.bringToFront();
       }
@@ -137,8 +193,9 @@ export function VotingDistrictMap({
 
   useLayoutEffect(() => {
     const activeId = selectedIdRef.current;
+    const styles = styleBundleRef.current;
     layerByIdRef.current.forEach((layer, id) => {
-      applyStyleForLayer(id, layer, false, activeId);
+      applyStyleForLayer(id, layer, false, activeId, styles);
       if (id === activeId) {
         layer.bringToFront();
       }
@@ -171,6 +228,7 @@ export function VotingDistrictMap({
         arrondissement,
         counts,
         partyEntries: partyTooltipEntries,
+        theme,
       });
 
       if (tooltipHtml) {
@@ -185,18 +243,18 @@ export function VotingDistrictMap({
       }
     }
 
-    applyStyleForLayer(districtId, pathLayer, false, selectedIdRef.current);
+    applyStyleForLayer(districtId, pathLayer, false, selectedIdRef.current, styleBundleRef.current);
 
     pathLayer.on({
       mouseover: () => {
-        applyStyleForLayer(districtId, pathLayer, true, selectedIdRef.current);
+        applyStyleForLayer(districtId, pathLayer, true, selectedIdRef.current, styleBundleRef.current);
         const isOpen = tooltipLayer.isTooltipOpen?.() ?? false;
         if (!isOpen) {
           tooltipLayer.openTooltip?.();
         }
       },
       mouseout: () => {
-        applyStyleForLayer(districtId, pathLayer, false, selectedIdRef.current);
+        applyStyleForLayer(districtId, pathLayer, false, selectedIdRef.current, styleBundleRef.current);
         const isOpen = tooltipLayer.isTooltipOpen?.() ?? false;
         if (isOpen) {
           tooltipLayer.closeTooltip?.();
@@ -211,12 +269,12 @@ export function VotingDistrictMap({
         if (previousSelectedId !== districtId) {
           const previousLayer = layerByIdRef.current.get(previousSelectedId);
           if (previousLayer) {
-            applyStyleForLayer(previousSelectedId, previousLayer, false, districtId);
+            applyStyleForLayer(previousSelectedId, previousLayer, false, districtId, styleBundleRef.current);
           }
         }
 
         selectedIdRef.current = districtId;
-        applyStyleForLayer(districtId, pathLayer, false, selectedIdRef.current);
+        applyStyleForLayer(districtId, pathLayer, false, selectedIdRef.current, styleBundleRef.current);
         pathLayer.bringToFront();
 
         onDistrictSelect?.({ id: districtId, name: label, slug, num: districtNum });
@@ -238,13 +296,15 @@ export function VotingDistrictMap({
         whenCreated={setMapInstance}
       >
         <TileLayer
+          key={`carto-${theme}`}
           attribution='&copy; <a href="https://cartodb.com/basemaps/">Carto</a> contributors, © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+          url={tileUrl}
         />
         <GeoJSON
+          key={`districts-${theme}`}
           data={{ ...districtCollection, features: FILTERED_FEATURES }}
           onEachFeature={onEachFeature}
-          style={() => BASE_STYLE}
+          style={() => styleBundle.base}
         />
       </MapContainer>
     </div>
@@ -257,6 +317,7 @@ type TooltipParams = {
   arrondissement: string | null;
   counts: Record<string, number> | null | undefined;
   partyEntries?: PartyTooltipEntry[];
+  theme: Theme;
 };
 
 function buildTooltipHtml({
@@ -265,15 +326,21 @@ function buildTooltipHtml({
   arrondissement,
   counts,
   partyEntries,
+  theme,
 }: TooltipParams): string | null {
   const displayName = districtName ?? label ?? "";
   const escapedName = displayName ? escapeHtml(displayName) : "";
   const escapedArrondissement = arrondissement ? escapeHtml(arrondissement) : "";
 
+  const primaryColor = theme === "dark" ? "#ffffff" : "#111111";
+  const secondaryColor = theme === "dark" ? "#ffffff" : "#6d6d6d";
+  const cardBackground = theme === "dark" ? "#1f1f1f" : "#ffffff";
+  const shadow = theme === "dark" ? "0 6px 18px rgba(0,0,0,0.45)" : "0 4px 16px rgba(17,17,17,0.18)";
+
   const partyRows = partyEntries
     ?.map((party) => {
       const count = counts ? counts[party.id] ?? 0 : 0;
-      return `<div style="display:flex;justify-content:space-between;font-size:11px;text-transform:uppercase;color:#111111;"><span>${escapeHtml(
+      return `<div style="display:flex;justify-content:space-between;font-size:11px;text-transform:uppercase;color:${primaryColor};"><span>${escapeHtml(
         party.label
       )}</span><span>${count}</span></div>`;
     })
@@ -284,16 +351,16 @@ function buildTooltipHtml({
   }
 
   const nameMarkup = escapedName
-    ? `<div style="font-size:14px;font-weight:600;text-transform:uppercase;color:#111111;">${escapedName}</div>`
+    ? `<div style="font-size:14px;font-weight:600;text-transform:uppercase;color:${primaryColor};">${escapedName}</div>`
     : "";
   const arrondissementMarkup = escapedArrondissement
-    ? `<div style="margin-top:4px;font-size:11px;text-transform:uppercase;color:#6d6d6d;">${escapedArrondissement}</div>`
+    ? `<div style="margin-top:4px;font-size:11px;text-transform:uppercase;color:${secondaryColor};">${escapedArrondissement}</div>`
     : "";
   const countsMarkup = partyRows
     ? `<div style="margin-top:8px;display:flex;flex-direction:column;gap:4px;">${partyRows}</div>`
     : "";
 
-  return `<div style="background:#ffffff;padding:12px;min-width:200px;box-shadow:0 4px 16px rgba(17,17,17,0.18);">${nameMarkup}${arrondissementMarkup}${countsMarkup}</div>`;
+  return `<div style="background:${cardBackground};padding:12px;min-width:200px;box-shadow:${shadow};border:none;">${nameMarkup}${arrondissementMarkup}${countsMarkup}</div>`;
 }
 
 function escapeHtml(value: string): string {
@@ -309,14 +376,20 @@ function applyStyleForLayer(
   districtId: number | null,
   layer: Path,
   isHovering: boolean,
-  selectedId: number
+  selectedId: number,
+  styles: StyleBundle
 ) {
   const isSelected = districtId !== null && districtId === selectedId;
-  if (isSelected) {
-    layer.setStyle(isHovering ? SELECTED_HOVER_STYLE : SELECTED_STYLE);
-  } else {
-    layer.setStyle(isHovering ? HOVER_STYLE : BASE_STYLE);
-  }
+  const style = isSelected
+    ? isHovering
+      ? styles.selectedHover
+      : styles.selected
+    : isHovering
+      ? styles.hover
+      : styles.base;
+
+  layer.setStyle(style);
+
   if (isSelected) {
     layer.bringToFront();
   }

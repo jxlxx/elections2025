@@ -52,9 +52,9 @@ export function PromiseDetailClient({ promise }: PromiseDetailClientProps) {
         <NavBar language={language} onLanguageChange={setLanguage} />
 
         <section className="space-y-4">
-          <div className="flex items-end gap-6 border-b border-[#111111]">
+          <div className="flex items-end gap-6 border-b border-[#cccccc]">
             <div className="flex flex-1 items-center gap-4">
-              <span className="relative -mb-[1px] inline-flex border border-[#111111] border-b-[#ffffff] bg-[#ffffff] px-2 py-2 uppercase font-semibold text-[#111111]">
+              <span className="relative -mb-[1px] inline-flex border border-[#cccccc] theme-tab-active px-2 py-2 uppercase font-semibold">
                 {partyLabel}
               </span>
             </div>
@@ -67,9 +67,9 @@ export function PromiseDetailClient({ promise }: PromiseDetailClientProps) {
           </header>
 
           <section className="space-y-3">
-            <div className="flex flex-wrap gap-2 text-sm font-medium text-[#5a5a5a]">
+            <div className="flex flex-wrap gap-2 text-sm font-medium">
               {categoryLabels.map((label) => (
-                <span key={label} className="rounded-full bg-[#dedede] px-3 py-1 text-[#1f1f1f]">
+                <span key={label} className="promise-chip promise-chip--filled px-3 py-1">
                   {label}
                 </span>
               ))}
@@ -77,9 +77,9 @@ export function PromiseDetailClient({ promise }: PromiseDetailClientProps) {
           </section>
 
           <section className="space-y-3">
-            <div className="flex flex-wrap gap-2 text-sm font-medium text-[#1f1f1f]">
+            <div className="flex flex-wrap gap-2 text-sm font-medium">
               {demographicLabels.map((label) => (
-                <span key={label} className="rounded border border-[#d4d4d4] px-3 py-1">
+                <span key={label} className="promise-chip promise-chip--outlined px-3 py-1">
                   {label}
                 </span>
               ))}
@@ -106,7 +106,7 @@ export function PromiseDetailClient({ promise }: PromiseDetailClientProps) {
                     <a
                       href={source.url}
                       target="_blank"
-                      rel="noreferrer"
+                      rel="noopener noreferrer"
                       className="font-semibold text-[#111111] underline decoration-dotted underline-offset-4 hover:opacity-80"
                     >
                       {source.label}
@@ -121,7 +121,7 @@ export function PromiseDetailClient({ promise }: PromiseDetailClientProps) {
         <div className="pt-4">
           <Link
             href="/platforms"
-            className="mx-auto flex w-fit items-center gap-2 border border-[#111111] bg-white px-6 py-2 text-lg font-semibold uppercase text-[#111111] hover:bg-[#f5f5f5]"
+            className="mx-auto flex w-fit items-center gap-2 border border-[#cccccc] bg-white px-6 py-2 text-lg font-semibold uppercase text-[#111111] hover:bg-[#f5f5f5]"
           >
             <span aria-hidden>←</span>
             Back

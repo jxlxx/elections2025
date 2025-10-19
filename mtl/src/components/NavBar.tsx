@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Fragment, type ReactNode } from "react";
+import { useTheme } from "@/components/ThemeProvider";
 import type { Language } from "@/lib/content";
 
 type NavItem = {
@@ -32,6 +33,8 @@ const NAV_LINKS: NavItem[] = [
 ];
 
 export function NavBar({ language, onLanguageChange }: NavBarProps) {
+  const { theme, toggleTheme } = useTheme();
+
   return (
     <header className="flex w-full items-center justify-between text-lg font-semibold uppercase">
       <nav className="flex items-center gap-1">
@@ -48,7 +51,15 @@ export function NavBar({ language, onLanguageChange }: NavBarProps) {
           </Fragment>
         ))}
       </nav>
-      <div className="flex items-center gap-1 text-lg font-semibold uppercase">
+      <div className="flex items-center gap-2 text-lg font-semibold uppercase">
+        <button
+          type="button"
+          onClick={toggleTheme}
+          aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+          className="transition-opacity hover:opacity-80"
+        >
+          <span aria-hidden>{theme === "dark" ? "🌞" : "🌙"}</span>
+        </button>
         <button
           type="button"
           onClick={() => onLanguageChange("fr")}
