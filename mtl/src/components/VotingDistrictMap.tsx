@@ -106,7 +106,7 @@ function computeBounds(features: DistrictFeature[]) {
 
   features.forEach((feature) => {
     if (feature.geometry) {
-      inspect(feature.geometry.coordinates);
+      // inspect(feature.geometry.coordinates);
     }
   });
 
@@ -285,6 +285,10 @@ export function VotingDistrictMap({
       },
     });
   };
+  const filteredCollection: FeatureCollection<Geometry, DistrictProperties> = {
+    type: "FeatureCollection",
+    features: FILTERED_FEATURES,
+  };
 
   return (
     <div className="h-[32rem] w-full border border-[#111111]">
@@ -293,7 +297,7 @@ export function VotingDistrictMap({
         zoom={11}
         scrollWheelZoom={false}
         className="h-full w-full"
-        whenCreated={setMapInstance}
+        whenReady={() => setMapInstance}
       >
         <TileLayer
           key={`carto-${theme}`}
@@ -302,7 +306,7 @@ export function VotingDistrictMap({
         />
         <GeoJSON
           key={`districts-${theme}`}
-          data={{ ...districtCollection, features: FILTERED_FEATURES }}
+          data={filteredCollection}
           onEachFeature={onEachFeature}
           style={() => styleBundle.base}
         />

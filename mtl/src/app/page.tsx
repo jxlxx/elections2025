@@ -16,7 +16,7 @@ export default function Home() {
             How does Montreal city council work?
           </h1>
           <p>
-            City council is Montréal's primary decision-making body. It adopts municipal budgets,
+            City council is Montréal&#39;s primary decision-making body. It adopts municipal budgets,
             by-laws, motions, programs, subsidies and governmental agreements. Learn all about it
             here.
           </p>
