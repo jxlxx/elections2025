@@ -5,7 +5,7 @@ import "leaflet/dist/leaflet.css";
 import type { Feature, FeatureCollection, Geometry } from "geojson";
 import type { Layer, Map as LeafletMap, Path, PathOptions } from "leaflet";
 import { GeoJSON, MapContainer, TileLayer } from "react-leaflet";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import electoralDistricts from "@/data/districts-electoraux-2021.json" assert { type: "json" };
 import {
   filterMontrealDistricts,
@@ -90,15 +90,16 @@ function computeBounds(features: DistrictFeature[]) {
 export type VotingDistrictMapProps = {
   selected: SelectedDistrict;
   onDistrictSelect?: (district: SelectedDistrict) => void;
+  refreshToken?: string | number;
 };
 
-export function VotingDistrictMap({ selected, onDistrictSelect }: VotingDistrictMapProps) {
+export function VotingDistrictMap({ selected, onDistrictSelect, refreshToken }: VotingDistrictMapProps) {
   const [mapInstance, setMapInstance] = useState<LeafletMap | null>(null);
   const bounds = useMemo(() => computeBounds(FILTERED_FEATURES), []);
   const layerByIdRef = useRef(new Map<number, Path>());
   const selectedIdRef = useRef(selected.id);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     selectedIdRef.current = selected.id;
     layerByIdRef.current.forEach((layer, id) => {
       applyStyleForLayer(id, layer, false, selectedIdRef.current);
@@ -114,8 +115,19 @@ export function VotingDistrictMap({ selected, onDistrictSelect }: VotingDistrict
     }
   }, [mapInstance, bounds]);
 
+  useLayoutEffect(() => {
+    const activeId = selectedIdRef.current;
+    layerByIdRef.current.forEach((layer, id) => {
+      applyStyleForLayer(id, layer, false, activeId);
+      if (id === activeId) {
+        layer.bringToFront();
+      }
+    });
+  }, [refreshToken, selected.id]);
+
   const onEachFeature = (feature: DistrictFeature, layer: Layer) => {
     const districtId = typeof feature.properties?.id === "number" ? feature.properties.id : null;
+    const districtNum = typeof feature.properties?.num === "number" ? feature.properties.num : -1;
     const label = formatDistrictName(feature.properties);
     const slug = getDistrictSlug(feature.properties, districtId ?? undefined);
     const pathLayer = layer as Path;
@@ -137,14 +149,23 @@ export function VotingDistrictMap({ selected, onDistrictSelect }: VotingDistrict
         applyStyleForLayer(districtId, pathLayer, false, selectedIdRef.current);
       },
       click: () => {
-        if (districtId !== null) {
-          selectedIdRef.current = districtId;
-          layerByIdRef.current.forEach((storedLayer, storedId) => {
-            applyStyleForLayer(storedId, storedLayer, false, selectedIdRef.current);
-          });
-          applyStyleForLayer(districtId, pathLayer, false, selectedIdRef.current);
-          onDistrictSelect?.({ id: districtId, name: label, slug });
+        if (districtId === null) {
+          return;
         }
+
+        const previousSelectedId = selectedIdRef.current;
+        if (previousSelectedId !== districtId) {
+          const previousLayer = layerByIdRef.current.get(previousSelectedId);
+          if (previousLayer) {
+            applyStyleForLayer(previousSelectedId, previousLayer, false, districtId);
+          }
+        }
+
+        selectedIdRef.current = districtId;
+        applyStyleForLayer(districtId, pathLayer, false, selectedIdRef.current);
+        pathLayer.bringToFront();
+
+        onDistrictSelect?.({ id: districtId, name: label, slug, num: districtNum });
       },
     });
   };

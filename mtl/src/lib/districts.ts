@@ -14,6 +14,7 @@ export type SelectedDistrict = {
   id: number;
   name: string | null;
   slug: string;
+  num: number;
 };
 
 export const MONTREAL_MUNICIPALITY_ID = 66023;
@@ -68,15 +69,17 @@ export function getDistrictSlug(properties?: DistrictProperties | null, fallback
 
 export function toSelectedDistrict(feature: DistrictFeature | undefined): SelectedDistrict {
   if (!feature) {
-    return { id: -1, name: null, slug: "district" };
+    return { id: -1, name: null, slug: "district", num: -1 };
   }
 
   const idValue = typeof feature.properties?.id === "number" ? feature.properties.id : -1;
+  const numValue = typeof feature.properties?.num === "number" ? feature.properties.num : -1;
 
   return {
     id: idValue,
     name: formatDistrictName(feature.properties),
     slug: getDistrictSlug(feature.properties, idValue),
+    num: numValue,
   };
 }
 

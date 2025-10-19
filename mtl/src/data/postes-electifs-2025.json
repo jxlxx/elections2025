@@ -1,0 +1,723 @@
+[
+  {
+    "no": "0.00",
+    "type_fr": "Maire de la Ville de Montréal",
+    "type_en": "Mayor of the City of Montréal",
+    "poste_fr": "Maire de la Ville de Montréal",
+    "poste_en": "Mayor of the City of Montréal"
+  },
+  {
+    "no": "1.00",
+    "type_fr": "Maire d'arrondissement",
+    "type_en": "Borough mayor",
+    "poste_fr": "Mairie de l'arrondissement d'Ahuntsic-Cartierville",
+    "poste_en": "Mayor of the Ahuntsic-Cartierville borough"
+  },
+  {
+    "no": "1.10",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral du Sault-au-Récollet",
+    "poste_en": "Electoral district of Sault-au-Récollet"
+  },
+  {
+    "no": "1.20",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Saint-Sulpice",
+    "poste_en": "Electoral district of Saint-Sulpice"
+  },
+  {
+    "no": "1.30",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral d'Ahuntsic",
+    "poste_en": "Electoral district of Ahuntsic"
+  },
+  {
+    "no": "1.40",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Bordeaux-Cartierville",
+    "poste_en": "Electoral district of Bordeaux-Cartierville"
+  },
+  {
+    "no": "2.00",
+    "type_fr": "Maire d'arrondissement",
+    "type_en": "Borough mayor",
+    "poste_fr": "Mairie de l'arrondissement d'Anjou",
+    "poste_en": "Mayor of the Anjou borough"
+  },
+  {
+    "no": "2.01",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "Conseiller de ville arrondissement d'Anjou",
+    "poste_en": "City councillor for the Anjou borough"
+  },
+  {
+    "no": "2.10",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de l'Ouest",
+    "poste_en": "Electoral district of l'Ouest"
+  },
+  {
+    "no": "2.20",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de l'Est",
+    "poste_en": "Electoral district of l'Est"
+  },
+  {
+    "no": "2.30",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral du centre",
+    "poste_en": "Electoral district of centre"
+  },
+  {
+    "no": "3.00",
+    "type_fr": "Maire d'arrondissement",
+    "type_en": "Borough mayor",
+    "poste_fr": "Mairie de l'arrondissement de Côte-des-Neiges–Notre-Dame-de-Grâce",
+    "poste_en": "Mayor of the Côte-des-Neiges–Notre-Dame-de-Grâce borough"
+  },
+  {
+    "no": "3.10",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Darlington",
+    "poste_en": "Electoral district of Darlington"
+  },
+  {
+    "no": "3.20",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Côte-des-Neiges",
+    "poste_en": "Electoral district of Côte-des-Neiges"
+  },
+  {
+    "no": "3.30",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Snowdon",
+    "poste_en": "Electoral district of Snowdon"
+  },
+  {
+    "no": "3.40",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Notre-Dame-de-Grâce",
+    "poste_en": "Electoral district of Notre-Dame-de-Grâce"
+  },
+  {
+    "no": "3.50",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Loyola",
+    "poste_en": "Electoral district of Loyola"
+  },
+  {
+    "no": "4.00",
+    "type_fr": "Maire d'arrondissement",
+    "type_en": "Borough mayor",
+    "poste_fr": "Mairie de l'arrondissement de Lachine",
+    "poste_en": "Mayor of the Lachine borough"
+  },
+  {
+    "no": "4.01",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "Conseiller de ville arrondissement de Lachine",
+    "poste_en": "City councillor for the Lachine borough"
+  },
+  {
+    "no": "4.10",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral du Canal",
+    "poste_en": "Electoral district of Canal"
+  },
+  {
+    "no": "4.20",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de J.-Émery-Provost",
+    "poste_en": "Electoral district of J.-Émery-Provost"
+  },
+  {
+    "no": "4.30",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral du Fort-Rolland",
+    "poste_en": "Electoral district of Fort-Rolland"
+  },
+  {
+    "no": "5.00",
+    "type_fr": "Maire d'arrondissement",
+    "type_en": "Borough mayor",
+    "poste_fr": "Mairie de l'arrondissement de LaSalle",
+    "poste_en": "Mayor of the LaSalle borough"
+  },
+  {
+    "no": "5.10",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral du Sault-Saint-Louis",
+    "poste_en": "Electoral district of Sault-Saint-Louis"
+  },
+  {
+    "no": "5.11",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral du Sault-Saint-Louis (siège 1)",
+    "poste_en": "Electoral district of Sault-Saint-Louis (seat 1)"
+  },
+  {
+    "no": "5.12",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral du Sault-Saint-Louis (siège 2)",
+    "poste_en": "Electoral district of Sault-Saint-Louis (seat 2)"
+  },
+  {
+    "no": "5.20",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Cecil-P.-Newman",
+    "poste_en": "Electoral district of Cecil-P.-Newman"
+  },
+  {
+    "no": "5.21",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de Cecil-P.-Newman (siège 1)",
+    "poste_en": "Electoral district of Cecil-P.-Newman (seat 1)"
+  },
+  {
+    "no": "5.22",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de Cecil-P.-Newman (siège 2)",
+    "poste_en": "Electoral district of Cecil-P.-Newman (seat 2)"
+  },
+  {
+    "no": "6.00",
+    "type_fr": "Maire d'arrondissement",
+    "type_en": "Borough mayor",
+    "poste_fr": "Mairie de l'arrondissement de L'Île-Bizard–Sainte-Geneviève",
+    "poste_en": "Mayor of the L'Île-Bizard–Sainte-Geneviève borough"
+  },
+  {
+    "no": "6.10",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de Pierre-Foretier",
+    "poste_en": "Electoral district of Pierre-Foretier"
+  },
+  {
+    "no": "6.20",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de Denis-Benjamin-Viger",
+    "poste_en": "Electoral district of Denis-Benjamin-Viger"
+  },
+  {
+    "no": "6.30",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de Jacques-Bizard",
+    "poste_en": "Electoral district of Jacques-Bizard"
+  },
+  {
+    "no": "6.40",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de Sainte-Geneviève",
+    "poste_en": "Electoral district of Sainte-Geneviève"
+  },
+  {
+    "no": "7.00",
+    "type_fr": "Maire d'arrondissement",
+    "type_en": "Borough mayor",
+    "poste_fr": "Mairie de l'arrondissement de Mercier–Hochelaga-Maisonneuve",
+    "poste_en": "Mayor of the Mercier–Hochelaga-Maisonneuve borough"
+  },
+  {
+    "no": "7.10",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Tétreaultville",
+    "poste_en": "Electoral district of Tétreaultville"
+  },
+  {
+    "no": "7.20",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Maisonneuve–Longue-Pointe",
+    "poste_en": "Electoral district of Maisonneuve–Longue-Pointe"
+  },
+  {
+    "no": "7.30",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral d'Hochelaga",
+    "poste_en": "Electoral district of Hochelaga"
+  },
+  {
+    "no": "7.40",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Louis-Riel",
+    "poste_en": "Electoral district of Louis-Riel"
+  },
+  {
+    "no": "8.00",
+    "type_fr": "Maire d'arrondissement",
+    "type_en": "Borough mayor",
+    "poste_fr": "Mairie de l'arrondissement de Montréal-Nord",
+    "poste_en": "Mayor of the Montréal-Nord borough"
+  },
+  {
+    "no": "8.10",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Marie-Clarac",
+    "poste_en": "Electoral district of Marie-Clarac"
+  },
+  {
+    "no": "8.11",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de Marie-Clarac",
+    "poste_en": "Electoral district of Marie-Clarac"
+  },
+  {
+    "no": "8.20",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral d'Ovide-Clermont",
+    "poste_en": "Electoral district of Ovide-Clermont"
+  },
+  {
+    "no": "8.21",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral d'Ovide-Clermont",
+    "poste_en": "Electoral district of Ovide-Clermont"
+  },
+  {
+    "no": "9.00",
+    "type_fr": "Maire d'arrondissement",
+    "type_en": "Borough mayor",
+    "poste_fr": "Mairie de l'arrondissement d'Outremont",
+    "poste_en": "Mayor of the Outremont borough"
+  },
+  {
+    "no": "9.10",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de Claude-Ryan",
+    "poste_en": "Electoral district of Claude-Ryan"
+  },
+  {
+    "no": "9.20",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de Joseph-Beaubien",
+    "poste_en": "Electoral district of Joseph-Beaubien"
+  },
+  {
+    "no": "9.30",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de Robert-Bourassa",
+    "poste_en": "Electoral district of Robert-Bourassa"
+  },
+  {
+    "no": "9.40",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de Jeanne-Sauvé",
+    "poste_en": "Electoral district of Jeanne-Sauvé"
+  },
+  {
+    "no": "10.00",
+    "type_fr": "Maire d'arrondissement",
+    "type_en": "Borough mayor",
+    "poste_fr": "Mairie de l'arrondissement de Pierrefonds-Roxboro",
+    "poste_en": "Mayor of the Pierrefonds-Roxboro borough"
+  },
+  {
+    "no": "10.10",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral du Bois-de-Liesse",
+    "poste_en": "Electoral district of Bois-de-Liesse"
+  },
+  {
+    "no": "10.11",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral du Bois-de-Liesse",
+    "poste_en": "Electoral district of Bois-de-Liesse"
+  },
+  {
+    "no": "10.20",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral du Cap-Saint-Jacques",
+    "poste_en": "Electoral district of Cap-Saint-Jacques"
+  },
+  {
+    "no": "10.21",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral du Cap-Saint-Jacques",
+    "poste_en": "Electoral district of Cap-Saint-Jacques"
+  },
+  {
+    "no": "11.00",
+    "type_fr": "Maire d'arrondissement",
+    "type_en": "Borough mayor",
+    "poste_fr": "Mairie de l'arrondissement du Plateau-Mont-Royal",
+    "poste_en": "Mayor of the du Plateau-Mont-Royal borough"
+  },
+  {
+    "no": "11.10",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral du Mile-End",
+    "poste_en": "Electoral district of Mile-End"
+  },
+  {
+    "no": "11.11",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral du Mile-End",
+    "poste_en": "Electoral district of Mile-End"
+  },
+  {
+    "no": "11.20",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de De Lorimier",
+    "poste_en": "Electoral district of De Lorimier"
+  },
+  {
+    "no": "11.21",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de De Lorimier",
+    "poste_en": "Electoral district of De Lorimier"
+  },
+  {
+    "no": "11.30",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Jeanne-Mance",
+    "poste_en": "Electoral district of Jeanne-Mance"
+  },
+  {
+    "no": "11.31",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de Jeanne-Mance",
+    "poste_en": "Electoral district of Jeanne-Mance"
+  },
+  {
+    "no": "12.00",
+    "type_fr": "Maire d'arrondissement",
+    "type_en": "Borough mayor",
+    "poste_fr": "Mairie de l'arrondissement de Rivière-des-Prairies–Pointe-aux-Trembles",
+    "poste_en": "Mayor of the Rivière-des-Prairies–Pointe-aux-Trembles borough"
+  },
+  {
+    "no": "12.10",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de La Pointe-aux-Prairies",
+    "poste_en": "Electoral district of La Pointe-aux-Prairies"
+  },
+  {
+    "no": "12.11",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de La Pointe-aux-Prairies",
+    "poste_en": "Electoral district of La Pointe-aux-Prairies"
+  },
+  {
+    "no": "12.20",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Pointe-aux-Trembles",
+    "poste_en": "Electoral district of Pointe-aux-Trembles"
+  },
+  {
+    "no": "12.21",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de Pointe-aux-Trembles",
+    "poste_en": "Electoral district of Pointe-aux-Trembles"
+  },
+  {
+    "no": "12.30",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Rivière-des-Prairies",
+    "poste_en": "Electoral district of Rivière-des-Prairies"
+  },
+  {
+    "no": "12.31",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de Rivière-des-Prairies",
+    "poste_en": "Electoral district of Rivière-des-Prairies"
+  },
+  {
+    "no": "13.00",
+    "type_fr": "Maire d'arrondissement",
+    "type_en": "Borough mayor",
+    "poste_fr": "Mairie de l'arrondissement de Rosemont–La Petite-Patrie",
+    "poste_en": "Mayor of the Rosemont–La Petite-Patrie borough"
+  },
+  {
+    "no": "13.10",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Saint-Édouard",
+    "poste_en": "Electoral district of Saint-Édouard"
+  },
+  {
+    "no": "13.20",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral d'Étienne-Desmarteau",
+    "poste_en": "Electoral district of Étienne-Desmarteau"
+  },
+  {
+    "no": "13.30",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral du Vieux-Rosemont",
+    "poste_en": "Electoral district of Vieux-Rosemont"
+  },
+  {
+    "no": "13.40",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Marie-Victorin",
+    "poste_en": "Electoral district of Marie-Victorin"
+  },
+  {
+    "no": "14.00",
+    "type_fr": "Maire d'arrondissement",
+    "type_en": "Borough mayor",
+    "poste_fr": "Mairie de l'arrondissement de Saint-Laurent",
+    "poste_en": "Mayor of the Saint-Laurent borough"
+  },
+  {
+    "no": "14.10",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de la Côte-de-Liesse",
+    "poste_en": "Electoral district of la Côte-de-Liesse"
+  },
+  {
+    "no": "14.11",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de la Côte-de-Liesse",
+    "poste_en": "Electoral district of la Côte-de-Liesse"
+  },
+  {
+    "no": "14.20",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Norman-McLaren",
+    "poste_en": "Electoral district of Norman-McLaren"
+  },
+  {
+    "no": "14.21",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de Norman-McLaren",
+    "poste_en": "Electoral district of Norman-McLaren"
+  },
+  {
+    "no": "15.00",
+    "type_fr": "Maire d'arrondissement",
+    "type_en": "Borough mayor",
+    "poste_fr": "Mairie de l'arrondissement de Saint-Léonard",
+    "poste_en": "Mayor of the Saint-Léonard borough"
+  },
+  {
+    "no": "15.10",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Saint-Léonard-Est",
+    "poste_en": "Electoral district of Saint-Léonard-Est"
+  },
+  {
+    "no": "15.11",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de Saint-Léonard-Est",
+    "poste_en": "Electoral district of Saint-Léonard-Est"
+  },
+  {
+    "no": "15.20",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Saint-Léonard-Ouest",
+    "poste_en": "Electoral district of Saint-Léonard-Ouest"
+  },
+  {
+    "no": "15.21",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de Saint-Léonard-Ouest",
+    "poste_en": "Electoral district of Saint-Léonard-Ouest"
+  },
+  {
+    "no": "16.00",
+    "type_fr": "Maire d'arrondissement",
+    "type_en": "Borough mayor",
+    "poste_fr": "Mairie de l'arrondissement du Sud-Ouest",
+    "poste_en": "Mayor of the du Sud-Ouest borough"
+  },
+  {
+    "no": "16.10",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Saint-Henri-Est–Petite-Bourgogne–Pointe-Saint-Charles–Griffintown",
+    "poste_en": "Electoral district of Saint-Henri-Est–Petite-Bourgogne–Pointe-Saint-Charles–Griffintown"
+  },
+  {
+    "no": "16.11",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de Saint-Henri-Est–Petite-Bourgogne–Pointe-Saint-Charles–Griffintown",
+    "poste_en": "Electoral district of Saint-Henri-Est–Petite-Bourgogne–Pointe-Saint-Charles–Griffintown"
+  },
+  {
+    "no": "16.20",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Saint-Paul–Émard–Saint-Henri-Ouest",
+    "poste_en": "Electoral district of Saint-Paul–Émard–Saint-Henri-Ouest"
+  },
+  {
+    "no": "16.21",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de Saint-Paul–Émard–Saint-Henri-Ouest",
+    "poste_en": "Electoral district of Saint-Paul–Émard–Saint-Henri-Ouest"
+  },
+  {
+    "no": "17.00",
+    "type_fr": "Maire d'arrondissement",
+    "type_en": "Borough mayor",
+    "poste_fr": "Mairie de l'arrondissement de Verdun",
+    "poste_en": "Mayor of the Verdun borough"
+  },
+  {
+    "no": "17.10",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Champlain−L'Île-des-Soeurs",
+    "poste_en": "Electoral district of Champlain−L'Île-des-Soeurs"
+  },
+  {
+    "no": "17.11",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de Champlain−L'Île-des-Soeurs (siège 1)",
+    "poste_en": "Electoral district of Champlain−L'Île-des-Soeurs (seat 1)"
+  },
+  {
+    "no": "17.12",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de Champlain−L'Île-des-Soeurs (siège 2)",
+    "poste_en": "Electoral district of Champlain−L'Île-des-Soeurs (seat 2)"
+  },
+  {
+    "no": "17.20",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Desmarchais-Crawford",
+    "poste_en": "Electoral district of Desmarchais-Crawford"
+  },
+  {
+    "no": "17.21",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de Desmarchais-Crawford (siège 1)",
+    "poste_en": "Electoral district of Desmarchais-Crawford (seat 1)"
+  },
+  {
+    "no": "17.22",
+    "type_fr": "Conseiller d'arrondissement",
+    "type_en": "Borough councillor",
+    "poste_fr": "District électoral de Desmarchais-Crawford (siège 2)",
+    "poste_en": "Electoral district of Desmarchais-Crawford (seat 2)"
+  },
+  {
+    "no": "18.10",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Peter-McGill",
+    "poste_en": "Electoral district of Peter-McGill"
+  },
+  {
+    "no": "18.20",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Saint-Jacques",
+    "poste_en": "Electoral district of Saint-Jacques"
+  },
+  {
+    "no": "18.30",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Sainte-Marie",
+    "poste_en": "Electoral district of Sainte-Marie"
+  },
+  {
+    "no": "19.00",
+    "type_fr": "Maire d'arrondissement",
+    "type_en": "Borough mayor",
+    "poste_fr": "Mairie de l'arrondissement de Villeray–Saint-Michel–Parc-Extension",
+    "poste_en": "Mayor of the Villeray–Saint-Michel–Parc-Extension borough"
+  },
+  {
+    "no": "19.10",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Saint-Michel",
+    "poste_en": "Electoral district of Saint-Michel"
+  },
+  {
+    "no": "19.20",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de François-Perrault",
+    "poste_en": "Electoral district of François-Perrault"
+  },
+  {
+    "no": "19.30",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Villeray",
+    "poste_en": "Electoral district of Villeray"
+  },
+  {
+    "no": "19.40",
+    "type_fr": "Conseiller de ville",
+    "type_en": "City councillor",
+    "poste_fr": "District électoral de Parc-Extension",
+    "poste_en": "Electoral district of Parc-Extension"
+  }
+]
