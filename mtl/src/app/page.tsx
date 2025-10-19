@@ -213,7 +213,7 @@ export default function Home() {
           <div className="flex items-start justify-between">
             <p className="text-xl font-semibold uppercase text-[#3f3f3f]">
             </p>
-            <div className="flex items-center gap-3 text-xl font-semibold uppercase">
+            <div className="flex items-center gap-1 text-lg font-semibold uppercase">
               <button
                 type="button"
                 onClick={() => setLanguage("fr")}
@@ -236,18 +236,21 @@ export default function Home() {
             </div>
           </div>
 
-          <nav className="flex items-center  gap-5 text-xl font-semibold uppercase">
+          <nav className="flex items-center  gap-1 text-lg font-semibold uppercase">
+            <a className="hover:text-[#111111]" href="#">
+              platforms
+            </a>
+              <span>|</span>
             <a className="hover:text-[#111111]" href="#">
               Map
             </a>
+              <span>|</span>
             <a className="hover:text-[#111111]" href="#">
               Candidates
             </a>
+              <span>|</span>
             <a className="hover:text-[#111111]" href="#">
               Quiz
-            </a>
-            <a className="hover:text-[#111111]" href="#">
-              About
             </a>
           </nav>
         </header>
@@ -318,11 +321,10 @@ export default function Home() {
           </div>
 
           <div className="flex flex-wrap items-baseline justify-between gap-3">
-            <h1 className="text-3xl font-semibold text-[#111111] uppercase">{partyLabel}</h1>
             <span className="text-base text-[#4f4f4f]">
               {totalPromisesSelected === 1
-                ? "1 promise"
-                : `${totalPromisesSelected} promises`}
+                ? "1 promise total"
+                : `${totalPromisesSelected} promises total`}
             </span>
           </div>
         </section>
